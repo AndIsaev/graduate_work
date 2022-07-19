@@ -1,0 +1,55 @@
+
+services:
+  test_redis:
+    container_name: test_redis
+    image: docker.io/bitnami/redis:5.0.14
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    networks:
+      - test_network
+
+  test_elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: test_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - test_network
+    ports:
+      - "9200:9200"
+
+  test_fastapi:
+    container_name: test_fastapi
+    build:
+      context: ./app/src
+      dockerfile: Dockerfile
+    env_file:
+      - app/envs/fastapi.env
+    networks:
+      - test_network
+    ports:
+      - "8000:8000"
+    depends_on:
+      - test_redis
+      - test_elasticsearch
+
+  test_service:
+    container_name: test_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "python functional/utils/wait_for_es.py
+      && python functional/utils/wait_for_redis.py
+      && pytest functional/src"
+    networks:
+      - test_network
+    depends_on:
+      - test_fastapi
+
+networks:
+  test_network:
