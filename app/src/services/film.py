@@ -21,7 +21,7 @@ class FilmService(ServiceMixin):
         genre: str = None,
     ) -> Optional[dict]:
         """Производим полнотекстовый поиск по фильмам в Elasticsearch."""
-        _source: tuple = ("id", "title", "imdb_rating", "genre")
+        _source: tuple = ("id", "title", "description", "imdb_rating", "genre")
         """ Получаем число фильмов из стейт """
         state_total: int = await self.get_total_count()
         params: str = f"{state_total}{page}{sorting}{page_size}{query}{genre}"
@@ -46,7 +46,7 @@ class FilmService(ServiceMixin):
             """ Прогоняем данные через pydantic """
             films: list[ListResponseFilm] = [
                 ListResponseFilm(
-                    uuid=row.id, title=row.title, imdb_rating=row.imdb_rating
+                    uuid=row.id, title=row.title, description=row.description, imdb_rating=row.imdb_rating
                 )
                 for row in hits
             ]
