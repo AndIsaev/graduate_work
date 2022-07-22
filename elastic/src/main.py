@@ -28,6 +28,7 @@ async def root():
 @app.on_event("startup")
 async def startup():
     """Подключаемся к базам при старте сервера"""
+
     cache.cache = redis.CacheRedis(
         cache_instance=await aioredis.create_redis_pool(
             (config.REDIS_HOST, config.REDIS_PORT), minsize=10, maxsize=20
@@ -54,4 +55,4 @@ app.include_router(router=person.router, prefix="/api/v1/person")
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:elastic", host="0.0.0.0", port=8000)
