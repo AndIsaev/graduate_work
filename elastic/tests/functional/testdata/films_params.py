@@ -14,7 +14,17 @@ film_search_params = [
     # сортировка по несуществующему полю
     ("film", {"query": "Star", "sort": "test"}, HTTPStatus.NOT_FOUND),
     # поиск фильма с лучшим рейтингом и в жанре Drama
-    ("film", {"query": "Bright", "page": 1, "page_size": 10, "sort": "-imdb_rating", "genre": "Drama"}, HTTPStatus.OK),
+    (
+        "film",
+        {
+            "query": "Bright",
+            "page": 1,
+            "page_size": 10,
+            "sort": "-imdb_rating",
+            "genre": "Drama",
+        },
+        HTTPStatus.OK,
+    ),
 ]
 
 film_list_params = [
@@ -30,5 +40,4 @@ film_list_params = [
     ("film", {"sort": "test"}, HTTPStatus.NOT_FOUND),
     # фильтрация по жанру
     ("film", {"genre": "Drama"}, HTTPStatus.OK),
-
 ]

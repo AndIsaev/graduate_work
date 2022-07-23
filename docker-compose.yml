@@ -7,13 +7,15 @@ services:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
-      - '6379:6379'
+      - "6379:6379"
     networks:
       - test_network
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     container_name: elasticsearch
+    env_file:
+      - ./.env
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -28,7 +30,7 @@ services:
       context: ./elastic/src
       dockerfile: Dockerfile
     env_file:
-      - ./elastic/envs/fastapi.env
+      - ./.env
     networks:
       - test_network
     ports:
@@ -38,26 +40,12 @@ services:
       - redis
       - elasticsearch
 
-#  test_service:
-#    container_name: test_service
-#    build:
-#      context: ./elastic
-#      dockerfile: Dockerfile
-#    entrypoint: >
-#      sh -c "python functional/utils/wait_for_es.py
-#      && python functional/utils/wait_for_redis.py
-#      && pytest functional/src"
-#    networks:
-#      - test_network
-#    depends_on:
-#      - fastapi
-
   postgres_db:
     image: postgres:13.3-alpine
     container_name: "postgres_db"
     restart: always
     env_file:
-      - .env
+      - ./.env
     ports:
       - "5432:5432"
     networks:
@@ -72,9 +60,15 @@ services:
     command: >
       sh -c "python manage.py collectstatic --noinput &&
              python manage.py migrate &&
+             DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD \
+             python manage.py createsuperuser --no-input \
+             --username=$DJANGO_SUPERUSER_USERNAME \
+             --email=$DJANGO_SUPERUSER_EMAIL &&
              gunicorn core.wsgi:application --bind 0.0.0.0:8080"
     volumes:
       - static:/code/static
+    env_file:
+      - ./.env
 
     networks:
       - test_network
@@ -97,13 +91,7 @@ services:
       - test_network
     depends_on:
       - web
-#      - fastapi
-
-#volumes:
-#  postgres_data_admin:
-#    driver: local
-#  static:
-#    driver: local
+      - fastapi
 
 volumes:
   postgres_data_admin:

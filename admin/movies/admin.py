@@ -6,8 +6,10 @@ class PersonRoleInline(admin.TabularInline):
     exclude = ("id",)
     model = FilmWork.persons.through
     extra = 1
-    raw_id_fields = ['person', ]
-    ordering = ('role', 'person__full_name')
+    raw_id_fields = [
+        "person",
+    ]
+    ordering = ("role", "person__full_name")
 
 
 class FilmWorkGenreInline(admin.TabularInline):

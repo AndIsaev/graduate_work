@@ -3,12 +3,12 @@ from typing import Optional
 
 
 def check_films_result(
-        status: int,
-        expected_status: int,
-        body: dict,
-        expected_query: Optional[str],
-        expected_page: Optional[str],
-        expected_page_size: Optional[str],
+    status: int,
+    expected_status: int,
+    body: dict,
+    expected_query: Optional[str],
+    expected_page: Optional[str],
+    expected_page_size: Optional[str],
 ) -> None:
     """
     Сверяем ожидаемые значения с результатом запросов.
@@ -17,7 +17,7 @@ def check_films_result(
     assert expected_status == status
     # находим вхождение ожидаемого query в результате
     # заведомо исключаем запрос с неправильной сортировкой чтобы найти вхождение
-    if expected_query == 'Star' and expected_status != HTTPStatus.NOT_FOUND:
+    if expected_query == "Star" and expected_status != HTTPStatus.NOT_FOUND:
         result_response = [res.get("title") for res in body.get("films")]
         for row in result_response:
             assert expected_query in row

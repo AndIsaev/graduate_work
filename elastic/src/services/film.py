@@ -46,7 +46,10 @@ class FilmService(ServiceMixin):
             """ Прогоняем данные через pydantic """
             films: list[ListResponseFilm] = [
                 ListResponseFilm(
-                    uuid=row.id, title=row.title, description=row.description, imdb_rating=row.imdb_rating
+                    uuid=row.id,
+                    title=row.title,
+                    description=row.description,
+                    imdb_rating=row.imdb_rating,
                 )
                 for row in hits
             ]
