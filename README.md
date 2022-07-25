@@ -1,3 +1,5 @@
+[![Voice assistent](https://github.com/AndIsaev/graduate_work/actions/workflows/main.yml/badge.svg)](https://github.com/AndIsaev/graduate_work/actions/workflows/main.yml)
+
 # Техническое задание дипломной работы "Голосовой ассистент"
 
 - Цели проекта
