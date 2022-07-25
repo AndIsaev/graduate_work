@@ -291,10 +291,4 @@ class Migration(migrations.Migration):
                 verbose_name="персона",
             ),
         ),
-        # migrations.AddConstraint(
-        #     model_name="filmworkgenre",
-        #     constraint=models.UniqueConstraint(
-        #         fields=("film_work", "genre"), name="unique_film_genre"
-        #     ),
-        # ),
     ]
