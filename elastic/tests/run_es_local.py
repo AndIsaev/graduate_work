@@ -2,7 +2,6 @@ import asyncio
 
 from elasticsearch import AsyncElasticsearch
 from elasticsearch._async.helpers import async_bulk
-
 from tests.functional import es_index, testdata
 from tests.functional.settings import Settings
 

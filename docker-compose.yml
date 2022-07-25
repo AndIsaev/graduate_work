@@ -53,13 +53,14 @@ services:
     volumes:
       - postgres_data_admin:/var/lib/postgresql/data/
 
-  web:
-    container_name: "web"
+  admin:
+    container_name: "admin"
     build:
       context: ./admin
     command: >
       sh -c "python manage.py collectstatic --noinput &&
              python manage.py migrate &&
+             python manage.py loaddata &&
              DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD \
              python manage.py createsuperuser --no-input \
              --username=$DJANGO_SUPERUSER_USERNAME \
@@ -90,7 +91,7 @@ services:
     networks:
       - test_network
     depends_on:
-      - web
+      - admin
       - fastapi
 
 volumes:

@@ -1,7 +1,7 @@
 import uuid
-from django.core.validators import MinValueValidator, MaxValueValidator
+
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 
 
@@ -32,10 +32,7 @@ class Genre(Time):
         max_length=255,
         unique=True,
     )
-    description = models.TextField(
-        _("description"),
-        blank=True,
-    )
+    description = models.TextField(_("description"), blank=True, null=True)
 
     class Meta:
         db_table = "genre"
@@ -181,13 +178,6 @@ class PersonFilmWork(models.Model):
 
     class Meta:
         db_table = "person_film_work"
-        unique_together = (
-            (
-                "film_work",
-                "person",
-                "role",
-            ),
-        )
 
     def __str__(self):
         return str(self.person)
@@ -218,9 +208,3 @@ class FilmWorkGenre(models.Model):
 
     class Meta:
         db_table = "genre_film_work"
-        constraints = [
-            UniqueConstraint(
-                fields=["film_work", "genre"],
-                name="unique_film_genre",
-            )
-        ]

@@ -4,7 +4,8 @@ from http import HTTPStatus
 import pytest
 
 from ..schemas.movie_schema import FilmPaginationValidation
-from ..schemas.person_schema import DetailPersonValidation, PersonPaginationValidation
+from ..schemas.person_schema import (DetailPersonValidation,
+                                     PersonPaginationValidation)
 from ..settings import Settings
 from ..testdata import film_work_data, person_data
 from ..utils.hash_key_creater import create_hash_key

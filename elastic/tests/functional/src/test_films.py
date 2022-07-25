@@ -6,10 +6,10 @@ import aioredis
 import pytest
 
 from ..settings import Settings
+from ..testdata.data_film_work import expected_film_data, not_found_film_data
 from ..testdata.films_params import film_list_params, film_search_params
 from ..utils.hash_key_creater import create_hash_key
 from ..utils.status_films import check_films_result
-from ..testdata.data_film_work import expected_film_data, not_found_film_data
 
 
 @pytest.mark.parametrize(

@@ -3,7 +3,8 @@ from http import HTTPStatus
 
 import pytest
 
-from ..schemas.genre_schema import FilmGenreValidation, GenrePaginationValidation
+from ..schemas.genre_schema import (FilmGenreValidation,
+                                    GenrePaginationValidation)
 from ..settings import Settings
 from ..testdata import genre_data
 from ..utils.hash_key_creater import create_hash_key
