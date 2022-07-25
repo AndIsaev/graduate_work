@@ -61,10 +61,6 @@ services:
       sh -c "python manage.py collectstatic --noinput &&
              python manage.py migrate &&
              python manage.py loaddata &&
-             DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD \
-             python manage.py createsuperuser --no-input \
-             --username=$DJANGO_SUPERUSER_USERNAME \
-             --email=$DJANGO_SUPERUSER_EMAIL &&
              gunicorn core.wsgi:application --bind 0.0.0.0:8080"
     volumes:
       - static:/code/static
