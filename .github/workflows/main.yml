@@ -30,4 +30,5 @@ jobs:
     - name: Test with mypy admin app
       run: |
         cd admin
+        pip install -r requirements.ini
         mypy .
