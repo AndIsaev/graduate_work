@@ -65,4 +65,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: andisaev/voice_assistent:0.1
+          tags: andisaev/voice_assistent:latest
