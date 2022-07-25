@@ -48,8 +48,7 @@ def get_params_films_to_elastic(
 def get_hits(docs: Optional[dict], schema: Schemas):
     hits: dict = docs.get("hits").get("hits")
     data: list = [row.get("_source") for row in hits]
-    parse_data = parse_obj_as(list[schema], data)
-    return parse_data
+    return parse_obj_as(list[schema], data)
 
 
 def create_hash_key(index: str, params: str) -> str:

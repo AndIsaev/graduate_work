@@ -1,0 +1,33 @@
+name: Voice assistent
+
+on: [push]
+
+jobs:
+  tests:
+    # «Раннер» — создание изолированного окружения с последней версией Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+    # Запуск actions checkout — готового скрипта
+    # для клонирования репозитория
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      # Запуск actions setup-python — готового скрипта
+      # для развёртывания окружения Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        # обновление pip
+        python -m pip install --upgrade pip
+        # установка flake8 и его плагинов
+        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+        # установка зависимостей
+        pip install -r tools/requirements.ini
+
+    - name: Test with flake8 and django tests
+      run: |
+        # запуск проверки проекта по flake8
+        python -m flake8
