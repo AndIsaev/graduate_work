@@ -1,0 +1,41 @@
+root:
+    $Find? $Director $Of? $Film
+    $Find? $Director $This? $Of
+    $Ellipsis
+
+slots:
+    film:
+        source: $Film
+
+$Ellipsis:
+    $LeftFiller? кто? [$Director $This?]
+
+$LeftFiller:
+    а
+
+$Film:
+    .+
+
+$Of:
+    %lemma
+    фильм
+    кино
+
+$Director:
+    %lemma
+    кто? автор
+    кто? режиссер
+    кто? снял
+
+$Find:
+    %lemma
+    назови
+    подскажи
+    поищи
+
+$This:
+    %lemma
+    этого фильма
+    его
+    это
+    этот
