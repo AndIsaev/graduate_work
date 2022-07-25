@@ -54,10 +54,10 @@ class GenreService(ServiceMixin):
                 page=page,
                 page_size=page_size,
             )
-        genres: list[FilmGenre] = [FilmGenre(**row) for row in orjson.loads(instance)]
+
         return get_by_pagination(
             name="genres",
-            db_objects=genres,
+            db_objects=[FilmGenre(**row) for row in orjson.loads(instance)],
             total=state_total,
             page=page,
             page_size=page_size,

@@ -1,10 +1,10 @@
-from typing import Optional, Union
+from typing import Any, Union
 
 from db.cache import AbstractCache
 
 
 class CacheRedis(AbstractCache):
-    async def get(self, key: str) -> Optional[dict]:
+    async def get(self, key: str) -> Any:
         return await self.cache.get(key=key)
 
     async def set(self, key: str, value: Union[bytes, str], expire: int):

@@ -17,9 +17,9 @@ class FilmService(ServiceMixin):
         self,
         page: int,
         page_size: int,
-        sorting: str = None,
-        query: str = None,
-        genre: str = None,
+        sorting: Optional[str] = None,
+        query: Optional[str] = None,
+        genre: Optional[str] = None,
     ) -> Optional[dict]:
         """Производим полнотекстовый поиск по фильмам в Elasticsearch."""
         _source: tuple = ("id", "title", "description", "imdb_rating", "genre")

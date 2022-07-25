@@ -80,12 +80,10 @@ class PersonService(ServiceMixin):
                 page=page,
                 page_size=page_size,
             )
-        person_films: list[ListResponseFilm] = [
-            ListResponseFilm(**row) for row in orjson.loads(instance)
-        ]
+
         return get_by_pagination(
             name="films",
-            db_objects=person_films,
+            db_objects=[ListResponseFilm(**row) for row in orjson.loads(instance)],
             total=state_total,
             page=page,
             page_size=page_size,
@@ -139,12 +137,10 @@ class PersonService(ServiceMixin):
                 page=page,
                 page_size=page_size,
             )
-        persons: list[DetailResponsePerson] = [
-            DetailResponsePerson(**row) for row in orjson.loads(instance)
-        ]
+
         return get_by_pagination(
             name="persons",
-            db_objects=persons,
+            db_objects=[DetailResponsePerson(**row) for row in orjson.loads(instance)],
             total=state_total,
             page=page,
             page_size=page_size,

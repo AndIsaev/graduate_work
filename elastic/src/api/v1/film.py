@@ -26,7 +26,7 @@ async def search_film_list(
     page_size: int = 10,
 ) -> FilmPagination:
     films: Optional[dict] = await film_service.get_all_films(
-        sorting=params.sort,
+        sorting=params.sort,  # type: ignore
         page=page,
         page_size=page_size,
         query=params.query,

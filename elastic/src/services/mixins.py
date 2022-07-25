@@ -4,16 +4,12 @@ from core.config import CACHE_EXPIRE_IN_SECONDS
 from db.cache import AbstractCache
 from db.storage import AbstractStorage
 from elasticsearch import NotFoundError
-from models.film import ESFilm
-from models.genre import ElasticGenre
-from models.person import ElasticPerson
-
-Schemas: tuple = (ESFilm, ElasticGenre, ElasticPerson)
-ES_schemas = Union[Schemas]
 
 
 class ServiceMixin:
-    def __init__(self, cache: AbstractCache, storage: AbstractStorage, index: str):
+    def __init__(
+        self, cache: AbstractCache, storage: AbstractStorage, index: str
+    ) -> None:
         self.cache: AbstractCache = cache
         self.storage: AbstractStorage = storage
         self.index: str = index
@@ -36,13 +32,13 @@ class ServiceMixin:
             order = "desc" if sort_field.startswith("-") else "asc"
             sort_field = f"{sort_field.removeprefix('-')}:{order}"
         try:
-            return await self.storage.search(
+            return await self.storage.search(  # type: ignore
                 index=_index, _source=_source, body=body, sort=sort_field
             )
         except Exception:
             return None
 
-    async def get_by_id(self, target_id: str, schema: Schemas) -> Optional[ES_schemas]:
+    async def get_by_id(self, target_id: str, schema):
         """Пытаемся получить данные из кеша, потому что оно работает быстрее"""
         instance = await self._get_result_from_cache(key=target_id)
         if not instance:
@@ -53,13 +49,11 @@ class ServiceMixin:
             if not instance:
                 return None
             """ Сохраняем фильм в кеш """
-            await self._put_data_to_cache(key=instance.id, instance=instance.json())
+            await self._put_data_to_cache(key=instance.id, instance=instance.json())  # type: ignore
             return instance
         return schema.parse_raw(instance)
 
-    async def _get_data_from_elastic_by_id(
-        self, target_id: str, schema: Schemas
-    ) -> Optional[ES_schemas]:
+    async def _get_data_from_elastic_by_id(self, target_id: str, schema):
         """Если он отсутствует в Elastic, значит объекта вообще нет в базе"""
         try:
             doc = await self.storage.get(index=self.index, target_id=target_id)
@@ -69,7 +63,7 @@ class ServiceMixin:
 
     async def _get_result_from_cache(self, key: str) -> Optional[bytes]:
         """Пытаемся получить данные об объекте из кеша"""
-        return await self.cache.get(key=key) or None
+        return await self.cache.get(key=key) or None  # type: ignore
 
     async def _put_data_to_cache(self, key: str, instance: Union[bytes, str]) -> None:
         """Сохраняем данные об объекте в кеш, время жизни кеша — 5 минут"""

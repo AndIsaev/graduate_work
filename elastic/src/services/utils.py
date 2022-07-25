@@ -2,7 +2,6 @@ import hashlib
 from typing import Optional
 
 from pydantic import parse_obj_as
-from services.mixins import Schemas
 
 
 def get_params_films_to_elastic(
@@ -19,7 +18,7 @@ def get_params_films_to_elastic(
     if genre:
         films_search = {"fuzzy": {"genre": {"value": genre}}}
     if query:
-        body: dict = {
+        return {
             "size": page_size,
             "from": (page - 1) * page_size,
             "query": {
@@ -29,26 +28,25 @@ def get_params_films_to_elastic(
                 }
             },
         }
-    else:
-        body: dict = {
-            "size": page_size,
-            "from": (page - 1) * page_size,
-            "query": {
-                "bool": {
-                    "must": {
-                        "match_all": {},
-                    },
-                    "filter": films_search,
-                }
-            },
-        }
-    return body
+
+    return {
+        "size": page_size,
+        "from": (page - 1) * page_size,
+        "query": {
+            "bool": {
+                "must": {
+                    "match_all": {},
+                },
+                "filter": films_search,
+            }
+        },
+    }
 
 
-def get_hits(docs: Optional[dict], schema: Schemas):
+def get_hits(docs: Optional[dict], schema):
     hits: dict = docs.get("hits").get("hits")
     data: list = [row.get("_source") for row in hits]
-    return parse_obj_as(list[schema], data)
+    return parse_obj_as(list[schema], data)  # type: ignore
 
 
 def create_hash_key(index: str, params: str) -> str:
