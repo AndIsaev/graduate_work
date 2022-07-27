@@ -11,6 +11,9 @@ TIMEOUT_ANSWER_LIST = (
 SHORT_WELCOME_ANSWER_LIST = (
     "Да?",
     "Ага?",
+    "Слушаю",
+    "Чем могу помочь?",
+    "Рада помочь!",
 )
 
 WELCOME_ANSWER_LIST = (
@@ -32,8 +35,9 @@ HELP_ANSWER_LIST = (
 )
 
 DIRECTOR_ANSWER_LIST = (
-    "$film снял $director",
-    "$film срежиссировал $director",
+    "{film} снял {director}",
+    "{film} снял режиссер {director}",
+    "{film} срежиссировал {director}",
 )
 
 ACTOR_ANSWER_LIST = (
@@ -41,13 +45,25 @@ ACTOR_ANSWER_LIST = (
     "В фильме {film} снялись {actors}",
 )
 
-FILM_DESCRIPTION_ANSWER_LIST = ("$film. $genre. $description. Рейтинг $rating.",)
+FILM_DESCRIPTION_ANSWER_LIST = (
+    "{film}. {genre}. {description}. Рейтинг {rating}.",
+    "{film} снят в жанре: {genre}. Кратко о фильме: {description}. Рейтинг: {rating}.",
+)
 
-FILM_ANSWER_LIST = (
-    "Могу порекомендовать $film.",
-    "Попробуйте посмотреть $film.",
-    "Вам могут понравиться $film.",
+TOP_FILMS_ANSWER_LIST = (
+    "Могу порекомендовать {films}.",
+    "Попробуйте посмотреть {films}.",
+    "Вам могут понравиться {films}.",
+)
+
+TOP_FILMS_GENRE_ANSWER_LIST = (
+    "В жанре {genre} могу порекомендовать: {film}.",
+    "В жанре {genre} попробуйте посмотреть {film}.",
+    "В жанре {genre} вам могут понравиться {film}.",
 )
 
 STATE_REQUEST_KEY = "session"
 STATE_RESPONSE_KEY = "session_state"
+
+START_TALK = "start_talk"
+START_TALK_WITH_QUESTION = "start_tark_with_question"

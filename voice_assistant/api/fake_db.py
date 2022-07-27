@@ -1,6 +1,8 @@
-from typing import List
+import random
 
-FAKE_FILMS: List[str] = [
+from api.models import Film, Person
+
+FAKE_FILMS: list[str] = [
     "Зеленая миля",
     "Список Шиндлера",
     "Побег из Шоушенка",
@@ -14,7 +16,7 @@ FAKE_FILMS: List[str] = [
     "Интерстеллар",
 ]
 
-FAKE_PERSONS: List[str] = [
+FAKE_PERSONS: list[str] = [
     "Гэри Олдмен",
     "Джеймс Макэвой",
     "Хавьер Бардем",
@@ -28,7 +30,7 @@ FAKE_PERSONS: List[str] = [
     "Джуд Лоу",
 ]
 
-fake_tv_shows: List[str] = [
+fake_tv_shows: list[str] = [
     "Рик и Морти",
     "Гравити Фолз",
     "Во все тяжкие",
@@ -41,3 +43,39 @@ fake_tv_shows: List[str] = [
     "Пацаны",
     "Офис",
 ]
+
+
+def get_fake_film():
+    return random.choice(FAKE_FILMS)
+
+
+def get_fake_film_list(count: int = 3):
+    film_list = []
+    fake_film_list = FAKE_FILMS.copy()
+    for _ in range(count):
+        film = random.choice(fake_film_list)
+        fake_film_list.remove(film)
+        film_list.append(film)
+    return film_list
+
+
+def get_fake_actors(count: int = 3):
+    actors = []
+    person_list = FAKE_PERSONS.copy()
+    for _ in range(count):
+        person = random.choice(person_list)
+        person_list.remove(person)
+        actors.append(Person(**{"uuid": "e42d300d-d671-4877-aa3f-d7fb1ced52ad", "full_name": person}))
+    return actors
+
+
+def get_fake_film_data(film_name: str):
+    return Film(
+        **{
+            "uuid": "e42d330d-d671-4877-aa3f-d7fb1ced52ad",
+            "title": film_name,
+            "description": "Борьба добра против зла.",
+            "rating": 7.9,
+            "genre": ["Экшен", "Фантастика"],
+        }
+    )

@@ -1,5 +1,6 @@
 import os
 
+from api.models import Person
 from api.search import SearchConnector
 
 
@@ -11,3 +12,7 @@ def get_search_es_connection():
 def decapitalize(text):
     text = text.strip()
     return text[:1].lower() + text[1:]
+
+
+def get_person_names(persons: list[Person]):
+    return [person.full_name for person in persons if person]

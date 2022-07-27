@@ -1,30 +1,28 @@
 root:
-    $Find? $Top $Films
-    $Find $Films
-    $Find $Top
-    $Find $Films $Top
-    $Find $Films $Genre
-    $Find $Top? $Genre
-    $Find? [$Top $Genre]
-    а? $Next $Next*
+    $Find? $Top $Film
+    $Find [$Film $Top]
+    $Find $Film $PreGenre $Genre
+    $Find $Top? $PreGenre $Genre
+    $Find $Top $Film $PreGenre $Genre
+    $Find $Genre $Top $Film $PreGenre
+    $Find? [$Top $PreGenre $Genre]
+
+filler:
+    %lemma
+    алиса
+    пожалуйста
 
 slots:
     genre:
+        type: Genres
         source: $Genre
-        type: EGenres
-    next:
-        source: $Next
 
-$Next:
-    %lemma
-    продолжай
-    следующие
-    дальше
-    еще
-
-$Genre:
+$PreGenre:
     %lemma
     (из жанра|в жанре)?
+
+$Genre:
+    $Genres
 
 $Find:
     %lemma
@@ -33,6 +31,7 @@ $Find:
     порекомендуй
     посоветуй
     подскажи
+    расскажи
     найди
     назови
     выдай
@@ -45,8 +44,10 @@ $Top:
     самый? высокий рейтинг
     с самым? высоким рейтингом
 
-$Films:
+$Film:
     %lemma
-    фильмы
+    фильм
+    лента
+    кинолента
     кино
-    картины
+    картина

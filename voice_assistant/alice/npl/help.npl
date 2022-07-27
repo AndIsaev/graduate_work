@@ -1,6 +1,7 @@
 root:
-    ($Start что ты $Body|$Help)
+    (($Start)? что ты $Body|$Help)
 filler:
+    %lemma
     алиса
 $Start:
     %lemma

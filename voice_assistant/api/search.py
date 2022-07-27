@@ -6,7 +6,7 @@ from uuid import UUID
 
 import requests
 
-from .models import Film, FilmBase, Person
+from .models import Film, BaseFilm, Person
 
 
 class SearchConnector:
@@ -76,7 +76,7 @@ class SearchConnector:
         )
         if response.status_code != HTTPStatus.OK:
             return None
-        return [FilmBase(**row) for row in response.json()]
+        return [BaseFilm(**row) for row in response.json()]
 
     def _find_person(self, search_str: str) -> Optional[Person]:
         response = self._get_response(
