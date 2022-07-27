@@ -3,17 +3,17 @@ import os
 import threading
 import time
 
-from alice_scenes import SCENES, ErrorAnswerScene, TimeoutAnswerScene, WelcomeScene, move_to_scene
+from alice.alice_scenes import SCENES, ErrorAnswerScene, TimeoutAnswerScene, WelcomeScene, move_to_scene
 
 from constants import STATE_REQUEST_KEY
-from request import Request
+from alice.alice_request import AliceRequest
 
 handler_response: dict = {}
 
 
 def run(event: dict, context: "runtime.RuntimeContext") -> None:
     global handler_response
-    request = Request(event)
+    request = AliceRequest(event)
     current_scene_id = event.get("state", {}).get(STATE_REQUEST_KEY, {}).get("scene")
     print(f"Current scene: {current_scene_id}.")
     if current_scene_id is None:
@@ -60,7 +60,7 @@ def handler(event: dict, context: "runtime.RuntimeContext") -> dict:
         if handler_response:
             if handler_response.get("timeout"):
                 timeout_answer_scene = TimeoutAnswerScene()
-                fallback = timeout_answer_scene.reply(Request(event))
+                fallback = timeout_answer_scene.reply(AliceRequest(event))
             else:
                 fallback = handler_response
             print(fallback)

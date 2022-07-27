@@ -145,9 +145,10 @@ class FilmDescriptionScene(AliceScene):
             print(f"Named film is {film_name}")
         film = get_fake_film_data(film_name=film_name)
         print(f"Description is {film}")
+        genres = [genre.name for genre in film.genre if genre]
         response = self._make_response(
             random.choice(FILM_DESCRIPTION_ANSWER_LIST).format(
-                film=film.title, genre=", ".join(film.genre), description=film.description, rating=film.rating
+                film=film.title, genre=", ".join(genres), description=film.description, rating=film.rating
             )
         )
         print(f"Response of FilmDescriptionScene: {response}")
