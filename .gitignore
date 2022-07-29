@@ -56,3 +56,4 @@ db.sqlite3
 static/
 media/
 .pytest_cache
+.mypy_cache
