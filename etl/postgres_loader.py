@@ -4,8 +4,8 @@ from typing import Union, Any, Optional
 from psycopg2.extensions import connection as _connection
 from psycopg2.extras import DictCursor
 
-from etl.config import EsIndex
-from etl.query import MOVIE_QUERY, GENRE_QUERY, PERSON_QUERY
+from config import EsIndex
+from query import MOVIE_QUERY, GENRE_QUERY, PERSON_QUERY
 from state import JsonFileStorage, State
 
 

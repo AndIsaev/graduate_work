@@ -1,4 +1,4 @@
-from etl.es_index.schema_template import TEMPLATE_INDEX_BODY
+from es_index.schema_template import TEMPLATE_INDEX_BODY
 
 PERSON_INDEX_BODY: dict = {
     **TEMPLATE_INDEX_BODY,
