@@ -387,7 +387,7 @@ film_work_data: list[dict] = [
     },
     {
         "id": "1b7d7c64-8be8-47db-8924-23029a9878a9",
-        "title": "Star Trek IV: The Voyage Home",
+        "title": "Home",
         "description": "The most acclaimed Star Trek adventure of all time with an important message. It "
                        "is the 23rd century, and a mysterious alien probe is threatening Earth by "
                        "evaporating the oceans and destroying the atmosphere. In their frantic attempt to "
@@ -558,7 +558,7 @@ film_work_data: list[dict] = [
     },
     {
         "id": "8a96580a-6b7b-422e-b4fb-694eaa269ff7",
-        "title": "The Tin Star",
+        "title": "The Tin",
         "description": "Veteran bounty-hunter Morg Hickman rides into a town in danger. The sheriff has "
                        "been killed, and young inexperienced Ben Owens named a temporary replacement "
                        "until a permanent can be found. Ben wants to be that permanent replacement, "

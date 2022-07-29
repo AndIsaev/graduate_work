@@ -44,7 +44,7 @@ def handler(event: dict, context: "runtime.RuntimeContext") -> dict:
     if handler_response:
         handler_response = {}
     print(f"Incoming request event: {json.dumps(event)}")
-    wait_time = round(float(os.environ.get("LIMIT_EXECUTE_SCENE", "2.7")), 1)
+    wait_time = round(float(os.environ.get("LIMIT_EXECUTE_SCENE", "2.5")), 1)
     thread_timer = threading.Thread(target=timeout_run, args=(wait_time,))
     thread_main = threading.Thread(target=run, args=(event, context))
     thread_timer.daemon = True

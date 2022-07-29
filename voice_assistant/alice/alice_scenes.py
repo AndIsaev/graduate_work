@@ -7,7 +7,8 @@ from typing import Optional
 from api.fake_db import get_fake_actors, get_fake_film, get_fake_film_data, get_fake_film_list
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
                        FILM_DESCRIPTION_ANSWER_LIST, HELP_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY,
-                       TIMEOUT_ANSWER_LIST, TOP_FILMS_ANSWER_LIST, WELCOME_ANSWER_LIST)
+                       TIMEOUT_ANSWER_LIST, TOP_FILMS_ANSWER_LIST, WELCOME_ANSWER_LIST, REPEAT_ANSWER_LIST,
+                       UNKNOWN_ANSWER_LIST)
 from request import Request
 from scenes import Scene
 from utils import decapitalize, get_person_names, get_search_es_connection
@@ -69,6 +70,16 @@ class ExitScene(AliceScene):
         return self._make_response(random.choice(EXIT_ANSWER_LIST), end_session=True)
 
 
+class RepeatScene(AliceScene):
+    def reply(self, request: Request) -> dict:
+        return self._make_response(random.choice(REPEAT_ANSWER_LIST))
+
+
+class UnknownAnswerScene(AliceScene):
+    def reply(self, request: Request) -> dict:
+        return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
+
+
 class ErrorAnswerScene(AliceScene):
     def reply(self, request: Request) -> dict:
         return self._make_response(random.choice(ERROR_ANSWER_LIST))
@@ -115,9 +126,8 @@ class DirectorScene(AliceScene):
         elif director_of_named_film := request.intents.get("director_of_named_film"):
             # get named film
             film: str = director_of_named_film.get("slots").get("film").get("value")
-            if film:
-                film = decapitalize(film)
             print(f"Named film is {film}")
+        film = decapitalize(film)
         director = get_fake_actors(count=1)
         print(f"Director is {director}")
         director_names = get_person_names(director)
@@ -140,15 +150,18 @@ class FilmDescriptionScene(AliceScene):
         elif description_of_named_film := request.intents.get("description_of_named_film"):
             # get named film
             film_name: str = description_of_named_film.get("slots").get("film").get("value")
-            if film_name:
-                film_name = decapitalize(film_name)
             print(f"Named film is {film_name}")
-        film = get_fake_film_data(film_name=film_name)
+        film_name = decapitalize(film_name)
+        films = es_api.find_film_by_name(film_name=film_name)
+        if not films:
+            error_answer = ErrorAnswerScene()
+            return error_answer.reply(request)
+        film = films[0]
         print(f"Description is {film}")
-        genres = [genre.name for genre in film.genre if genre]
+        # genres = [genre.name for genre in film.genre if genre]
         response = self._make_response(
             random.choice(FILM_DESCRIPTION_ANSWER_LIST).format(
-                film=film.title, genre=", ".join(genres), description=film.description, rating=film.rating
+                film=film.title, description=film.description, imdb_rating=film.imdb_rating
             )
         )
         print(f"Response of FilmDescriptionScene: {response}")
@@ -162,8 +175,7 @@ class TopFilmsScene(AliceScene):
         if genre:
             film_name_list = get_fake_film_list()
         else:
-            film_name_list = get_fake_film_list()
-
+            film_name_list = es_api.find_top_films()
         print(f"Top films are {film_name_list}")
         response = self._make_response(random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_name_list)))
         print(f"Response of TopFilmsScene: {response}")

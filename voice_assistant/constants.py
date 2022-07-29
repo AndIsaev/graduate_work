@@ -3,6 +3,12 @@ ERROR_ANSWER_LIST = (
     "Извините, уши заложило. Пожалуйста, повторите еще раз.",
 )
 
+UNKNOWN_ANSWER_LIST = (
+    "Извините, к сожалению, не знаю о таком.",
+    "Извините, такой информацией не владею.",
+    "К сожалению, не знаю о таком.",
+)
+
 TIMEOUT_ANSWER_LIST = (
     "Извините, проблемы с интернетом. Обратитесь ко мне, пожалуйста, позже.",
     "Извините, что-то я не успеваю. Повторите вопрос, пожалуйста, позже.",
@@ -34,6 +40,12 @@ HELP_ANSWER_LIST = (
     "найти режиссера или актера любого фильма.",
 )
 
+REPEAT_ANSWER_LIST = (
+    "Повторите, пожалуйста, еще раз.",
+    "Перефразируйте, пожалуйста.",
+    "Скажите это другими словами или другой последовательностью, пожалуйста."
+)
+
 DIRECTOR_ANSWER_LIST = (
     "{film} снял {director}",
     "{film} снял режиссер {director}",
@@ -46,8 +58,13 @@ ACTOR_ANSWER_LIST = (
 )
 
 FILM_DESCRIPTION_ANSWER_LIST = (
-    "{film}. {genre}. {description}. Рейтинг {rating}.",
-    "{film} снят в жанре: {genre}. Кратко о фильме: {description}. Рейтинг: {rating}.",
+    "{film}. {description}. Рейтинг {imdb_rating}.",
+    "{film}. Кратко о фильме: {description}. Рейтинг: {imdb_rating}.",
+)
+
+FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST = (
+    "{film}. {genre}. {description}. Рейтинг {imdb_rating}.",
+    "{film} снят в жанре: {genre}. Кратко о фильме: {description}. Рейтинг: {imdb_rating}.",
 )
 
 TOP_FILMS_ANSWER_LIST = (

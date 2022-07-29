@@ -19,13 +19,13 @@ class BaseFilm(BaseModel):
 
     uuid: UUID
     title: str
-    rating: float
+    imdb_rating: float
+    description: str
 
 
 class Film(BaseFilm):
     """Подробная информация о фильме."""
 
-    description: str
     genre: Optional[list[Genre]]
     actors: Optional[list[Person]]
     writers: Optional[list[Genre]]

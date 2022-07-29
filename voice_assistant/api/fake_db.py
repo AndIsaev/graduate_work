@@ -75,7 +75,7 @@ def get_fake_film_data(film_name: str):
             "uuid": "e42d330d-d671-4877-aa3f-d7fb1ced52ad",
             "title": film_name,
             "description": "Борьба добра против зла.",
-            "rating": 7.9,
+            "imdb_rating": 7.9,
             "genre": [Genre(**{"uuid": "e52d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Экшен"}),
                       Genre(**{"uuid": "e62d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Фантастика"})],
         }
