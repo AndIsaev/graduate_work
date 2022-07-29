@@ -3,7 +3,8 @@ name: Voice assistent
 on:
   push:
     branches:
-        - 'feature/admin-panel'
+        - 'develop'
+        - 'main'
 
 jobs:
   tests:
