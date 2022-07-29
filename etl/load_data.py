@@ -42,7 +42,7 @@ def save_data_to_elastic() -> None:
 
             while count != 0:
                 if count >= batch:
-                    for row in data["result"][index : index + batch]:
+                    for row in data["result"][index: index + batch]:
                         transformed_data.append(dict(zip(COLUMNS[key], row)))
                         index += 1
                     count -= batch
@@ -54,7 +54,7 @@ def save_data_to_elastic() -> None:
                     elastic.load_data_to_elasticsearch(
                         data_from_postgres=[
                             dict(zip(COLUMNS[key], row))
-                            for row in data["result"][index : index + count]
+                            for row in data["result"][index: index + count]
                         ],
                         index_name=key,
                     )
