@@ -1,9 +1,9 @@
 import logging
 import time
 from datetime import datetime
-import psycopg2
 
-from config import dsn, es_conf, ES_SCHEMAS, COLUMNS, AWAIT_SECONDS
+import psycopg2
+from config import AWAIT_SECONDS, COLUMNS, ES_SCHEMAS, dsn, es_conf
 from elasticsearch_loader import ElasticSearchLoader
 from postgres_loader import PostgresLoader
 from services import backoff

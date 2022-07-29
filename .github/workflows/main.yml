@@ -43,3 +43,9 @@ jobs:
         cd elastic
         mypy .
         cd ..
+
+    - name: Test with mypy elastic app
+      run: |
+        cd etl
+        mypy .
+        cd ..

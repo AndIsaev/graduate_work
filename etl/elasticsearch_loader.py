@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import datetime
+
 from elasticsearch import Elasticsearch
 from services import backoff
 from state import JsonFileStorage, State
@@ -11,7 +12,7 @@ logger = logging.getLogger("ESLoader")
 class ElasticSearchLoader:
     def __init__(self, host: list):
         self.client = Elasticsearch(host)
-        self.data = []
+        self.data: list = []
         self.key = "movies"
 
     @backoff()
