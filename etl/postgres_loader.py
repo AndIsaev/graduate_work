@@ -1,11 +1,10 @@
 from datetime import datetime
-from typing import Union, Any, Optional
-
-from psycopg2.extensions import connection as _connection
-from psycopg2.extras import DictCursor
+from typing import Any, Generator, Optional, Union
 
 from config import EsIndex
-from query import MOVIE_QUERY, GENRE_QUERY, PERSON_QUERY
+from psycopg2.extensions import connection as _connection
+from psycopg2.extras import DictCursor
+from query import GENRE_QUERY, MOVIE_QUERY, PERSON_QUERY
 from state import JsonFileStorage, State
 
 
@@ -15,7 +14,7 @@ class PostgresLoader:
         self.cursor = self.conn.cursor(cursor_factory=DictCursor)
         self.key: Optional[str] = None
         self.batch = 100
-        self.data = []
+        self.data: list = []
         self.count = 0
 
     def get_state_key(self) -> Union[datetime, Any]:
@@ -28,7 +27,7 @@ class PostgresLoader:
 
         return time
 
-    def loader_from_postgresql(self) -> list:
+    def loader_from_postgresql(self) -> Generator:
         """
         Главный запрос на получение данных из бд.
         """
