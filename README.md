@@ -50,6 +50,10 @@
 touch .env
 ````
 
+````
+nano .env
+````
+
 ### Запускаем последовательно команды
 ````
 docker-compose build
