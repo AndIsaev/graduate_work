@@ -4,7 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from etl.es_index import FILM_WORK_INDEX_BODY, GENRE_INDEX_BODY, PERSON_INDEX_BODY
+from es_index import FILM_WORK_INDEX_BODY, GENRE_INDEX_BODY, PERSON_INDEX_BODY
 
 dotenv_path = os.path.join(Path(__file__).resolve(strict=True).parent.parent, ".env")
 
@@ -18,15 +18,13 @@ dsn = {
     "dbname": os.getenv("POSTGRES_DB"),
     "user": os.getenv("POSTGRES_USER"),
     "password": os.getenv("POSTGRES_PASSWORD"),
-    # "host": os.getenv("POSTGRES_HOST"),
-    "host": "localhost",
+    "host": os.getenv("POSTGRES_HOST"),
     "port": os.getenv("POSTGRES_PORT"),
 }
 
 es_conf = [
     {
-        # "host": os.getenv("ELASTIC_HOST"),
-        "host": "localhost",
+        "host": os.getenv("ELASTIC_HOST"),
         "port": os.getenv("ELASTIC_PORT"),
     }
 ]

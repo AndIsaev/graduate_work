@@ -74,6 +74,22 @@ services:
     depends_on:
       - postgres_db
 
+  etl:
+    container_name: etl
+    build:
+      context: ./etl/
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    networks:
+      - test_network
+    ports:
+      - "8020:8020"
+    restart: always
+    depends_on:
+      - postgres_db
+      - elasticsearch
+
   nginx:
     container_name: "nginx"
     image: nginx:1.23.0
