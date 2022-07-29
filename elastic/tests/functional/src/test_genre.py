@@ -4,7 +4,9 @@ from http import HTTPStatus
 import pytest
 
 from elastic.tests.functional.schemas.genre_schema import (
-    FilmGenreValidation, GenrePaginationValidation)
+    FilmGenreValidation,
+    GenrePaginationValidation,
+)
 from elastic.tests.functional.settings import Settings
 from elastic.tests.functional.testdata.data_genre import genre_data
 from elastic.tests.functional.utils.hash_key_creater import create_hash_key

@@ -1,4 +1,4 @@
-from .schema_template import TEMPLATE_INDEX_BODY
+from etl.es_index.schema_template import TEMPLATE_INDEX_BODY
 
 PERSON_INDEX_BODY: dict = {
     **TEMPLATE_INDEX_BODY,
@@ -11,7 +11,7 @@ PERSON_INDEX_BODY: dict = {
                 "analyzer": "ru_en",
                 "fields": {"raw": {"type": "keyword"}},
             },
-            "roles": {"type": "keyword", "analyzer": "ru_en"},
+            "roles": {"type": "text", "analyzer": "ru_en"},
             "film_ids": {
                 "type": "nested",
                 "dynamic": "strict",

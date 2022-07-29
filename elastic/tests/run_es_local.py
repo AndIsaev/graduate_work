@@ -2,8 +2,8 @@ import asyncio
 
 from elasticsearch import AsyncElasticsearch
 from elasticsearch._async.helpers import async_bulk
-from tests.functional import es_index, testdata
-from tests.functional.settings import Settings
+from functional import es_index, testdata
+from functional.settings import Settings
 
 
 async def es_index_loader(index: str, index_body: dict, row_data: list[dict]) -> None:

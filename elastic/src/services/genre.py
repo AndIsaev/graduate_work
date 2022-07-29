@@ -2,6 +2,8 @@ from functools import lru_cache
 from typing import Optional
 
 import orjson
+
+from core.config import GENRE_INDEX
 from db.cache import AbstractCache, get_cache
 from db.storage import AbstractStorage, get_storage
 from fastapi import Depends
@@ -70,4 +72,4 @@ def get_genre_service(
     cache: AbstractCache = Depends(get_cache),
     storage: AbstractStorage = Depends(get_storage),
 ) -> GenreService:
-    return GenreService(cache=cache, storage=storage, index="genre_test")
+    return GenreService(cache=cache, storage=storage, index=GENRE_INDEX)

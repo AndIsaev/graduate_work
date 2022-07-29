@@ -20,7 +20,7 @@ def load_data(ps_2: _connection) -> None:
                 next(data)
                 psycopg2_cursor.copy_expert(f"COPY {table} FROM STDIN with csv", data)
         else:
-            print('Данные уже заполнены')
+            print("Данные уже заполнены")
 
 
 def create_superuser():
@@ -32,7 +32,7 @@ def create_superuser():
             email=os.getenv("DJANGO_SUPERUSER_EMAIL"),
         )
     else:
-        print('админ уже создан')
+        print("админ уже создан")
 
 
 class Command(BaseCommand):

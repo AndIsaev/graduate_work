@@ -17,6 +17,6 @@ class Settings:
     REDIS_HOST: str = os.getenv("REDIS_HOST")
     REDIS_PORT: int = os.getenv("REDIS_PORT")
     # ELASTIC Indexes
-    PERSON_INDEX: str = "person_test"
-    GENRE_INDEX: str = "genre_test"
-    MOVIES_INDEX: str = "movies_test"
+    PERSON_INDEX: str = "persons"
+    GENRE_INDEX: str = "genres"
+    MOVIES_INDEX: str = "movies"

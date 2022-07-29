@@ -2,14 +2,15 @@ from functools import lru_cache
 from typing import Optional
 
 import orjson
+
+from core.config import MOVIES_INDEX
 from db.cache import AbstractCache, get_cache
 from db.storage import AbstractStorage, get_storage
 from fastapi import Depends
 from models.film import ESFilm, ListResponseFilm
 from services.mixins import ServiceMixin
 from services.pagination import get_by_pagination
-from services.utils import (create_hash_key, get_hits,
-                            get_params_films_to_elastic)
+from services.utils import create_hash_key, get_hits, get_params_films_to_elastic
 
 
 class FilmService(ServiceMixin):
@@ -87,4 +88,4 @@ def get_film_service(
     cache: AbstractCache = Depends(get_cache),
     storage: AbstractStorage = Depends(get_storage),
 ) -> FilmService:
-    return FilmService(cache=cache, storage=storage, index="movies_test")
+    return FilmService(cache=cache, storage=storage, index=MOVIES_INDEX)

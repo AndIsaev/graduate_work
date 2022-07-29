@@ -3,6 +3,8 @@ from http import HTTPStatus
 from typing import Optional
 
 import orjson
+
+from core.config import PERSON_INDEX
 from db.cache import AbstractCache, get_cache
 from db.storage import AbstractStorage, get_storage
 from fastapi import Depends, HTTPException
@@ -153,4 +155,4 @@ def get_person_service(
     cache: AbstractCache = Depends(get_cache),
     storage: AbstractStorage = Depends(get_storage),
 ) -> PersonService:
-    return PersonService(cache=cache, storage=storage, index="person_test")
+    return PersonService(cache=cache, storage=storage, index=PERSON_INDEX)
