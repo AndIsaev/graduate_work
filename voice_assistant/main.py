@@ -4,7 +4,13 @@ import threading
 import time
 
 from alice.alice_request import AliceRequest
-from alice.alice_scenes import SCENES, ErrorAnswerScene, TimeoutAnswerScene, WelcomeScene, move_to_scene
+from alice.alice_scenes import (
+    SCENES,
+    ErrorAnswerScene,
+    TimeoutAnswerScene,
+    WelcomeScene,
+    move_to_scene,
+)
 from constants import STATE_REQUEST_KEY
 
 handler_response: dict = {}
@@ -38,7 +44,7 @@ def timeout_run(wait_time: float) -> None:
     handler_response = {"timeout": True}
 
 
-def handler(event: dict, context: "runtime.RuntimeContext") -> dict:
+def handler(event: dict, context: "runtime.RuntimeContext") -> dict:  # type: ignore
     global handler_response
     if handler_response:
         handler_response = {}

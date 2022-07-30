@@ -13,9 +13,10 @@ class SearchConnector:
     def __init__(self, url: str) -> None:
         self._url = url
 
-    def _get_response(self, path: str, query: Optional[dict] = None) -> requests.Response:
-        response = requests.get(f"{self._url}{path}", params=query)
-        return response
+    def _get_response(
+        self, path: str, query: Optional[dict] = None
+    ) -> requests.Response:
+        return requests.get(f"{self._url}{path}", params=query)
 
     def find_film_by_name(self, film_name: str) -> Optional[list[BaseFilm]]:
         films = self._find_films(film_name=film_name, page=1, size=1)
@@ -27,19 +28,30 @@ class SearchConnector:
     def find_top_films(self) -> Optional[list[BaseFilm]]:
         return self._find_films(size=5)
 
-    def find_top_films_by_genre(self, genre_id: Optional[UUID]) -> Optional[list[BaseFilm]]:
-        films = self._find_films(genre_id=genre_id)
-        return films
+    def find_top_films_by_genre(
+        self, genre_id: Optional[UUID]
+    ) -> Optional[list[BaseFilm]]:
+        return self._find_films(genre_id=genre_id)
 
     def find_film_actors(
-        self, film_uuid: Optional[UUID] = None, film_name: Optional[str] = None, limit: int = 5
+        self,
+        film_uuid: Optional[UUID] = None,
+        film_name: Optional[str] = None,
+        limit: int = 5,
     ) -> Optional[list[Person]]:
-        return self._find_film_person("actor", film_uuid=film_uuid, film_name=film_name, limit=limit)
+        return self._find_film_person(
+            "actor", film_uuid=film_uuid, film_name=film_name, limit=limit
+        )
 
     def find_film_directors(
-        self, film_uuid: Optional[UUID] = None, film_name: Optional[str] = None, limit: int = 5
+        self,
+        film_uuid: Optional[UUID] = None,
+        film_name: Optional[str] = None,
+        limit: int = 5,
     ) -> Optional[list[Person]]:
-        return self._find_film_person("director", film_uuid=film_uuid, film_name=film_name, limit=limit)
+        return self._find_film_person(
+            "director", film_uuid=film_uuid, film_name=film_name, limit=limit
+        )
 
     def find_person_films(self, search_str: str) -> tuple[Optional[str], Optional[str]]:
         person = self._find_person(search_str)
@@ -56,7 +68,11 @@ class SearchConnector:
         return Film(**response.json())
 
     def _find_films(
-        self, film_name: Optional[str] = None, genre_id: Optional[UUID] = None, page: int = 1, size: int = 3
+        self,
+        film_name: Optional[str] = None,
+        genre_id: Optional[UUID] = None,
+        page: int = 1,
+        size: int = 3,
     ) -> Optional[list[BaseFilm]]:
         query = {
             "sort": "-imdb_rating",
@@ -77,7 +93,11 @@ class SearchConnector:
         return [BaseFilm(**row) for row in response_json.get("films", [])]
 
     def _find_film_person(
-        self, person_type: str, film_uuid: Optional[UUID], film_name: Optional[str], limit: int
+        self,
+        person_type: str,
+        film_uuid: Optional[UUID],
+        film_name: Optional[str],
+        limit: int,
     ) -> Optional[list[Person]]:
         film = None
         if film_uuid:

@@ -30,10 +30,14 @@ async def startup():
     """Подключаемся к базам при старте сервера"""
 
     cache.cache = redis.CacheRedis(
-        cache_instance=await aioredis.create_redis_pool((config.REDIS_HOST, config.REDIS_PORT), minsize=10, maxsize=20)
+        cache_instance=await aioredis.create_redis_pool(
+            (config.REDIS_HOST, config.REDIS_PORT), minsize=10, maxsize=20
+        )
     )
     storage.storage = elastic.StorageElasticsearch(
-        storage_instance=AsyncElasticsearch(hosts=[f"{config.ELASTIC_HOST}:{config.ELASTIC_PORT}"])
+        storage_instance=AsyncElasticsearch(
+            hosts=[f"{config.ELASTIC_HOST}:{config.ELASTIC_PORT}"]
+        )
     )
 
 
