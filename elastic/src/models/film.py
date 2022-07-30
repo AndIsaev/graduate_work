@@ -1,6 +1,6 @@
 from typing import Optional
 
-from models.genre import ElasticGenre, FilmGenre
+from models.genre import ElasticGenre
 from models.mixin import BaseModelMixin, PaginationMixin
 from models.person import FilmPerson
 from pydantic import BaseModel
@@ -29,7 +29,7 @@ class ListResponseFilm(BaseModelMixin):
 class DetailResponseFilm(ListResponseFilm):
     """Schema for Film work detail"""
 
-    genre: Optional[list[FilmGenre]] = []
+    genre: Optional[list[ElasticGenre]] = []
     actors: Optional[list[FilmPerson]] = []
     writers: Optional[list[FilmPerson]] = []
     directors: Optional[list[FilmPerson]] = []

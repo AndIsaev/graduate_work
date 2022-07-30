@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 from core.config import CACHE_EXPIRE_IN_SECONDS
 from db.cache import AbstractCache
@@ -23,7 +23,7 @@ class ServiceMixin:
 
     async def search_in_elastic(
         self, body: dict, _source=None, sort=None, _index=None
-    ) -> Optional[dict]:
+    ) -> Any:
         if not _index:
             _index = self.index
 
@@ -37,7 +37,7 @@ class ServiceMixin:
                 _source=_source,
                 body=body,
                 sort=sort_field,
-            )  # type: ignore
+            )
         except Exception:
             return None
 
