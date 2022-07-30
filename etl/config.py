@@ -1,9 +1,8 @@
-import os
 import logging
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-
 from es_index import FILM_WORK_INDEX_BODY, GENRE_INDEX_BODY, PERSON_INDEX_BODY
 
 dotenv_path = os.path.join(Path(__file__).resolve(strict=True).parent.parent, ".env")

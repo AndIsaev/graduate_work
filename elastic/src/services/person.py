@@ -3,7 +3,6 @@ from http import HTTPStatus
 from typing import Optional
 
 import orjson
-
 from core.config import PERSON_INDEX
 from db.cache import AbstractCache, get_cache
 from db.storage import AbstractStorage, get_storage

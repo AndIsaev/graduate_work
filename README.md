@@ -42,3 +42,23 @@
 - FastAPI
 - PostgresSQL
 - Yandex Cloud
+
+# Запустить проект
+
+### Создайте .env файл и скопируйте данные с env.example
+````
+touch .env
+````
+
+````
+nano .env
+````
+
+### Запускаем последовательно команды
+````
+docker-compose build
+````
+
+````
+docker-compose up -d
+````

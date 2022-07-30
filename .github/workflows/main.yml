@@ -3,7 +3,8 @@ name: Voice assistent
 on:
   push:
     branches:
-        - 'feature/admin-panel'
+        - 'develop'
+        - 'main'
 
 jobs:
   tests:
@@ -41,5 +42,11 @@ jobs:
     - name: Test with mypy elastic app
       run: |
         cd elastic
+        mypy .
+        cd ..
+
+    - name: Test with mypy elastic app
+      run: |
+        cd etl
         mypy .
         cd ..

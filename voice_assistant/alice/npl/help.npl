@@ -3,6 +3,8 @@ root:
 filler:
     %lemma
     алиса
+    пожалуйста
+    будь добра
 $Start:
     %lemma
     расскажи

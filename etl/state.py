@@ -11,7 +11,7 @@ class BaseStorage:
         pass
 
     @abc.abstractmethod
-    def retrieve_state(self) -> dict:
+    def retrieve_state(self) -> dict[Any, Any]:
         """Загрузить состояние локально из постоянного хранилища"""
         pass
 
@@ -27,7 +27,7 @@ class JsonFileStorage(BaseStorage):
         with open(self.file_path, "w") as f:
             json.dump(state, f)
 
-    def retrieve_state(self) -> dict:
+    def retrieve_state(self) -> Any:
         if self.file_path is None:
             logging.info("Не установлен путь до файла.")
             return {}

@@ -15,6 +15,7 @@ entity Genres:
             исторический
         comedy:
             комедия
+            музыкальная комедия
         melodrama:
             мелодрама
         noir:
