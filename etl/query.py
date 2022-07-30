@@ -36,7 +36,7 @@ PERSON_QUERY = """
                 SELECT  p.id,
                         p.full_name,
                         ARRAY_AGG(DISTINCT pfw.role) AS roles,
-                        JSON_AGG(DISTINCT jsonb_build_object('id', fw.id)) 
+                        JSON_AGG(DISTINCT jsonb_build_object('id', fw.id, 'title', fw.title)) 
                                     FILTER (WHERE pfw.film_work_id = fw.id) AS film_ids
                 FROM person as p
                          LEFT JOIN person_film_work as pfw ON p.id = pfw.person_id

@@ -18,7 +18,7 @@ FILM_WORK_INDEX_BODY: dict = {
                 "dynamic": "strict",
                 "properties": {
                     "id": {"type": "keyword"},
-                    "name": {"type": "text", "analyzer": "ru_en"},
+                    "name": {"type": "keyword"},
                 },
             },
             "actors": {

@@ -45,6 +45,7 @@ class FilmService(ServiceMixin):
                     title=row.title,
                     description=row.description,
                     imdb_rating=row.imdb_rating,
+                    genre=row.genre,
                 )
                 for row in hits
             ]

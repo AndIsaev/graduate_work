@@ -9,7 +9,7 @@ class ElasticPerson(BaseModel):
     id: str
     full_name: str
     roles: Optional[list[str]] = []
-    film_ids: Optional[list[UUID]] = []
+    film_ids: Optional[list[dict[str, str]]] = []
 
 
 class FilmPerson(BaseModelMixin):
@@ -21,8 +21,8 @@ class FilmPerson(BaseModelMixin):
 class DetailResponsePerson(FilmPerson):
     """Schema for Person detail"""
 
-    role: str
-    film_ids: Optional[list[UUID]] = []
+    role: list[str]
+    film_ids: Optional[list[dict[str, str]]] = []
 
 
 class PersonPagination(PaginationMixin):

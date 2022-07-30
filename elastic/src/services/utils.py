@@ -12,9 +12,18 @@ def get_params_films_to_elastic(page_size: int = 10, page: int = 1, genre: str =
     :param query: находит фильмы по полю title
     :return: возвращает правильный body для поиска в Elasticsearch
     """
-    films_search = None
     if genre:
-        films_search = {"fuzzy": {"genre": {"value": genre}}}
+        return {
+            "size": page_size,
+            "from": (page - 1) * page_size,
+            "query": {
+                "nested": {
+                    "path": "genre",
+                    "query": {"bool": {"must": {"match": {"genre.name": genre}}}},
+                    "inner_hits": {},
+                }
+            },
+        }
     if query:
         return {
             "size": page_size,
@@ -22,7 +31,6 @@ def get_params_films_to_elastic(page_size: int = 10, page: int = 1, genre: str =
             "query": {
                 "bool": {
                     "must": {"match": {"title": {"query": query, "fuzziness": "auto"}}},
-                    "filter": films_search,
                 }
             },
         }
@@ -35,7 +43,6 @@ def get_params_films_to_elastic(page_size: int = 10, page: int = 1, genre: str =
                 "must": {
                     "match_all": {},
                 },
-                "filter": films_search,
             }
         },
     }
