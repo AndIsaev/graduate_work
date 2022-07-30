@@ -28,7 +28,5 @@ class Film(BaseFilm):
 
     genre: Optional[list[Genre]]
     actors: Optional[list[Person]]
-    writers: Optional[list[Genre]]
-    actors_names: Optional[list[str]]
-    writers_names: Optional[list[str]]
-    directors_names: Optional[list[str]]
+    writers: Optional[list[Person]]
+    directors: Optional[list[Person]]

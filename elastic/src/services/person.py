@@ -63,7 +63,7 @@ class PersonService(ServiceMixin):
             """ Прогоняем данные через pydantic """
             person_films: list[ListResponseFilm] = [
                 ListResponseFilm(
-                    uuid=film.id, title=film.title, imdb_rating=film.imdb_rating
+                    uuid=film.id, title=film.title, imdb_rating=film.imdb_rating, genre=film.genre
                 )
                 for film in hits
             ]

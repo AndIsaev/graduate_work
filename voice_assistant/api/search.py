@@ -19,24 +19,9 @@ class SearchConnector:
 
     def find_film_by_name(self, film_name: str) -> Optional[list[BaseFilm]]:
         films = self._find_films(film_name=film_name, page=1, size=1)
-        return films
-
-    def find_film_by_uuid(self, search_str: str) -> Optional[Film]:
-        film_uuid = self._find_film_uuid(search_str)
-        film = self._get_film_by_uuid(film_uuid)
-        return film
-
-    def find_film_directors(self, search_str: str) -> tuple[Optional[str], Optional[str]]:
-        film = self.find_film_by_uuid(search_str)
-        if not film:
-            return None, None
-        return film.title, ", ".join(film.directors_names)
-
-    def find_film_actors(self, search_str: str, limit: int = 5) -> tuple[Optional[str], Optional[str]]:
-        film = self.find_film_by_uuid(search_str)
-        if not film:
-            return None, None
-        return film.title, ", ".join(film.actors_names[:limit])
+        if films:
+            return self._find_film_by_uuid(films[0].uuid)
+        return None
 
     def find_top_films(self) -> Optional[list[BaseFilm]]:
         films = self._find_films()
@@ -46,6 +31,16 @@ class SearchConnector:
         films = self._find_films(genre_id=genre_id)
         return films
 
+    def find_film_actors(
+            self, film_uuid: Optional[UUID] = None, film_name: Optional[str] = None, limit: int = 5
+    ) -> Optional[list[Person]]:
+        return self._find_film_person("actor", film_uuid=film_uuid, film_name=film_name, limit=limit)
+
+    def find_film_directors(
+            self, film_uuid: Optional[UUID] = None, film_name: Optional[str] = None, limit: int = 5
+    ) -> Optional[list[Person]]:
+        return self._find_film_person("director", film_uuid=film_uuid, film_name=film_name, limit=limit)
+
     def find_person_films(self, search_str: str) -> tuple[Optional[str], Optional[str]]:
         person = self._find_person(search_str)
         if not person:
@@ -54,13 +49,7 @@ class SearchConnector:
         film_names = ", ".join(film.title for film in films) if films else None
         return person.full_name, film_names
 
-    def _find_film_uuid(self, film_uuid: str) -> Optional[UUID]:
-        response = self._get_response("film/", query={"film_id": film_uuid})
-        if response.status_code != HTTPStatus.OK:
-            return None
-        return response.json()[0]["uuid"]
-
-    def _get_film_by_uuid(self, film_uuid: UUID) -> Optional[Film]:
+    def _find_film_by_uuid(self, film_uuid: UUID) -> Optional[Film]:
         response = self._get_response(f"film/{film_uuid}")
         if response.status_code != HTTPStatus.OK:
             return None
@@ -85,6 +74,25 @@ class SearchConnector:
         if not response_json.get("total", 0):
             return None
         return [BaseFilm(**row) for row in response_json.get("films", [])]
+
+    def _find_film_person(
+        self, person_type: str, film_uuid: Optional[UUID], film_name: Optional[str],  limit: int
+    ) -> Optional[list[Person]]:
+        film = None
+        if film_uuid:
+            film = self._find_film_by_uuid(film_uuid)
+        elif film_name:
+            base_film = self._find_films(film_name=film_name, page=1, size=1)
+            if base_film:
+                film = self._find_film_by_uuid(base_film[0].uuid)
+        if film:
+            if person_type == "actor":
+                return film.actors[:limit]
+            elif person_type == "director":
+                return film.directors[:limit]
+            elif person_type == "writer":
+                return film.writers[:limit]
+        return None
 
     def _find_person(self, search_str: str) -> Optional[Person]:
         response = self._get_response(
@@ -112,7 +120,7 @@ class SearchConnector:
         film_ids = response.json()["film_ids"][:5]
         films = []
         for film_id in film_ids:
-            film = self._get_film_by_uuid(film_id)
+            film = self._find_film_by_uuid(film_id)
             if film:
                 films.append(film)
         return films

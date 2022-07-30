@@ -33,7 +33,7 @@ async def search_film_list(
         genre=params.genre_filter,
     )
     if not films:
-        """Если жанры не найдены, отдаём 404 статус"""
+        """Если фильмы не найдены, отдаём 404 статус"""
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="films not found")
     return FilmPagination(**films)
 

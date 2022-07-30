@@ -4,11 +4,11 @@ import sys
 from abc import ABC
 from typing import Optional
 
-from api.fake_db import get_fake_actors, get_fake_film, get_fake_film_data, get_fake_film_list
+from api.fake_db import get_fake_actors, get_fake_film, get_fake_film_list
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
                        FILM_DESCRIPTION_ANSWER_LIST, HELP_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY,
                        TIMEOUT_ANSWER_LIST, TOP_FILMS_ANSWER_LIST, WELCOME_ANSWER_LIST, REPEAT_ANSWER_LIST,
-                       UNKNOWN_ANSWER_LIST)
+                       UNKNOWN_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST)
 from request import Request
 from scenes import Scene
 from utils import decapitalize, get_person_names, get_search_es_connection
@@ -93,23 +93,27 @@ class TimeoutAnswerScene(AliceScene):
 class ActorScene(AliceScene):
     def reply(self, request: Request) -> dict:
         print("Start ActorScene.reply method")
-        film = ""
+        film_name = ""
         if request.intents.get("actor_of_current_film"):
             # get current film
-            film = get_fake_film()
-            print(f"Current film is {film}")
+            film_name = get_fake_film()
+            print(f"Current film is {film_name}")
         elif actor_of_named_film := request.intents.get("actor_of_named_film"):
             # get named film
-            film: str = actor_of_named_film.get("slots").get("film").get("value")
-            if film:
-                film = decapitalize(film)
-            print(f"Named film is {film}")
-        actors = get_fake_actors(count=3)
+            film_name: str = actor_of_named_film.get("slots").get("film").get("value")
+            print(f"Named film is {film_name}")
+        if film_name:
+            film_name = decapitalize(film_name)
+        else:
+            return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
+        actors = es_api.find_film_actors(film_name=film_name)
         print(f"Actors are {actors}")
+        if not actors:
+            return self._make_response(f"К сожалению, не нашла актеров фильма: {film_name}")
         actor_names = get_person_names(actors)
         print(f"Actor names are {actor_names}")
         response = self._make_response(
-            random.choice(ACTOR_ANSWER_LIST).format(film=film, actors=", ".join(actor_names))
+            random.choice(ACTOR_ANSWER_LIST).format(film=film_name, actors=", ".join(actor_names))
         )
         print(f"Response of ActorScene: {response}")
         return response
@@ -118,22 +122,27 @@ class ActorScene(AliceScene):
 class DirectorScene(AliceScene):
     def reply(self, request: Request) -> dict:
         print("Start DirectorScene.reply method")
-        film = ""
+        film_name = ""
         if request.intents.get("director_of_current_film"):
             # get current film
-            film = get_fake_film()
-            print(f"Current film is {film}")
+            film_name = get_fake_film()
+            print(f"Current film is {film_name}")
         elif director_of_named_film := request.intents.get("director_of_named_film"):
             # get named film
-            film: str = director_of_named_film.get("slots").get("film").get("value")
-            print(f"Named film is {film}")
-        film = decapitalize(film)
-        director = get_fake_actors(count=1)
-        print(f"Director is {director}")
-        director_names = get_person_names(director)
-        print(f"Actor names are {director_names}")
+            film_name: str = director_of_named_film.get("slots").get("film").get("value")
+            print(f"Named film is {film_name}")
+        if film_name:
+            film_name = decapitalize(film_name)
+        else:
+            return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
+        directors = es_api.find_film_directors(film_name=film_name, limit=1)
+        print(f"Actors are {directors}")
+        if not directors:
+            return self._make_response(f"К сожалению, не нашла режиссера фильма: {film_name}")
+        director_names = get_person_names(directors)
+        print(f"Director names are {director_names}")
         response = self._make_response(
-            random.choice(DIRECTOR_ANSWER_LIST).format(film=film, director=", ".join(director_names))
+            random.choice(DIRECTOR_ANSWER_LIST).format(film=film_name, actors=", ".join(director_names))
         )
         print(f"Response of DirectorScene: {response}")
         return response
@@ -151,6 +160,8 @@ class FilmDescriptionScene(AliceScene):
             # get named film
             film_name: str = description_of_named_film.get("slots").get("film").get("value")
             print(f"Named film is {film_name}")
+        if not film_name:
+            return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
         film_name = decapitalize(film_name)
         films = es_api.find_film_by_name(film_name=film_name)
         if not films:
@@ -158,12 +169,19 @@ class FilmDescriptionScene(AliceScene):
             return error_answer.reply(request)
         film = films[0]
         print(f"Description is {film}")
-        # genres = [genre.name for genre in film.genre if genre]
-        response = self._make_response(
-            random.choice(FILM_DESCRIPTION_ANSWER_LIST).format(
-                film=film.title, description=film.description, imdb_rating=film.imdb_rating
+        genres = [genre.name for genre in film.genre if genre]
+        if genres:
+            response = self._make_response(
+                random.choice(FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST).format(
+                    film=film.title, description=film.description, imdb_rating=film.imdb_rating, genre=", ".join(genres)
+                )
             )
-        )
+        else:
+            response = self._make_response(
+                random.choice(FILM_DESCRIPTION_ANSWER_LIST).format(
+                    film=film.title, description=film.description, imdb_rating=film.imdb_rating
+                )
+            )
         print(f"Response of FilmDescriptionScene: {response}")
         return response
 
