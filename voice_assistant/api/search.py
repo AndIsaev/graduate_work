@@ -19,6 +19,7 @@ class SearchConnector:
 
     def find_film_by_name(self, film_name: str) -> Optional[list[BaseFilm]]:
         films = self._find_films(film_name=film_name, page=1, size=1)
+        print(f"find_film_by_name films: {films}")
         if films:
             return self._find_film_by_uuid(films[0].uuid)
         return None
@@ -70,6 +71,7 @@ class SearchConnector:
         if response.status_code != HTTPStatus.OK:
             return None
         response_json = response.json()
+        print(f"find_film response_json: {response_json}")
         if not response_json.get("total", 0):
             return None
         return [BaseFilm(**row) for row in response_json.get("films", [])]

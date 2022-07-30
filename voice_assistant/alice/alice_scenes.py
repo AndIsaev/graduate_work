@@ -142,7 +142,7 @@ class DirectorScene(AliceScene):
         director_names = get_person_names(directors)
         print(f"Director names are {director_names}")
         response = self._make_response(
-            random.choice(DIRECTOR_ANSWER_LIST).format(film=film_name, actors=", ".join(director_names))
+            random.choice(DIRECTOR_ANSWER_LIST).format(film=film_name, director=", ".join(director_names))
         )
         print(f"Response of DirectorScene: {response}")
         return response
@@ -163,11 +163,11 @@ class FilmDescriptionScene(AliceScene):
         if not film_name:
             return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
         film_name = decapitalize(film_name)
-        films = es_api.find_film_by_name(film_name=film_name)
-        if not films:
+        film = es_api.find_film_by_name(film_name=film_name)
+        print(f"films: {film}")
+        if not film:
             error_answer = ErrorAnswerScene()
             return error_answer.reply(request)
-        film = films[0]
         print(f"Description is {film}")
         genres = [genre.name for genre in film.genre if genre]
         if genres:
@@ -189,7 +189,7 @@ class FilmDescriptionScene(AliceScene):
 class TopFilmsScene(AliceScene):
     def reply(self, request: Request) -> dict:
         print("Start TopFilmsScene.reply method")
-        genre: Optional[str] = request.intents.get("top_films").get("slots").get("genre").get("value")
+        genre: Optional[str] = request.intents.get("top_films").get("slots", {}).get("genre", {}).get("value", {})
         if genre:
             # TODO develop logic with top films by genre
             films = get_fake_film_list()
