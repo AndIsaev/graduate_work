@@ -12,9 +12,7 @@ from ..utils.hash_key_creater import create_hash_key
 from ..utils.status_films import check_films_result
 
 
-@pytest.mark.parametrize(
-    "endpoint, query, expected_status", [*film_search_params, *film_list_params]
-)
+@pytest.mark.parametrize("endpoint, query, expected_status", [*film_search_params, *film_list_params])
 @pytest.mark.asyncio
 async def test_get_list_films(
     movies_index,
@@ -74,9 +72,7 @@ async def test_get_film(movies_index, make_get_request, redis_cache):
     assert await redis_cache.get(key=expected_film_data.get("uuid")) is None
 
     # проверка несуществуеего фильма
-    response = await make_get_request(
-        endpoint=f"film/{not_found_film_data.get('uuid')}"
-    )
+    response = await make_get_request(endpoint=f"film/{not_found_film_data.get('uuid')}")
     assert HTTPStatus.NOT_FOUND == response.status
     assert redis_cache.get(key=expected_film_data.get("uuid")) is not None
     await redis_cache.flushall()

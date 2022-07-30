@@ -1,6 +1,6 @@
 import random
 
-from api.models import Film, Person, Genre
+from api.models import Film, Genre, Person
 
 FAKE_FILMS: list[str] = [
     "Зеленая миля",
@@ -76,7 +76,9 @@ def get_fake_film_data(film_name: str):
             "title": film_name,
             "description": "Борьба добра против зла.",
             "imdb_rating": 7.9,
-            "genre": [Genre(**{"uuid": "e52d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Экшен"}),
-                      Genre(**{"uuid": "e62d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Фантастика"})],
+            "genre": [
+                Genre(**{"uuid": "e52d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Экшен"}),
+                Genre(**{"uuid": "e62d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Фантастика"}),
+            ],
         }
     )

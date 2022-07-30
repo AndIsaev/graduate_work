@@ -6,9 +6,9 @@ from typing import Optional
 
 from api.fake_db import get_fake_actors, get_fake_film, get_fake_film_list
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
-                       FILM_DESCRIPTION_ANSWER_LIST, HELP_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY,
-                       TIMEOUT_ANSWER_LIST, TOP_FILMS_ANSWER_LIST, WELCOME_ANSWER_LIST, REPEAT_ANSWER_LIST,
-                       UNKNOWN_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST)
+                       FILM_DESCRIPTION_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST, HELP_ANSWER_LIST,
+                       REPEAT_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY, TIMEOUT_ANSWER_LIST,
+                       TOP_FILMS_ANSWER_LIST, UNKNOWN_ANSWER_LIST, WELCOME_ANSWER_LIST)
 from request import Request
 from scenes import Scene
 from utils import decapitalize, get_person_names, get_search_es_connection
@@ -191,11 +191,15 @@ class TopFilmsScene(AliceScene):
         print("Start TopFilmsScene.reply method")
         genre: Optional[str] = request.intents.get("top_films").get("slots").get("genre").get("value")
         if genre:
-            film_name_list = get_fake_film_list()
+            # TODO develop logic with top films by genre
+            films = get_fake_film_list()
         else:
-            film_name_list = es_api.find_top_films()
-        print(f"Top films are {film_name_list}")
-        response = self._make_response(random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_name_list)))
+            films = es_api.find_top_films()
+        if not films:
+            return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
+        film_names = [_film.title for _film in films]
+        print(f"Top films are {films}")
+        response = self._make_response(random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_names)))
         print(f"Response of TopFilmsScene: {response}")
         return response
 

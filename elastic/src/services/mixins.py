@@ -7,9 +7,7 @@ from elasticsearch import NotFoundError
 
 
 class ServiceMixin:
-    def __init__(
-        self, cache: AbstractCache, storage: AbstractStorage, index: str
-    ) -> None:
+    def __init__(self, cache: AbstractCache, storage: AbstractStorage, index: str) -> None:
         self.cache: AbstractCache = cache
         self.storage: AbstractStorage = storage
         self.index: str = index
@@ -21,9 +19,7 @@ class ServiceMixin:
     async def set_total_count(self, value: int):
         self.total_count = value
 
-    async def search_in_elastic(
-        self, body: dict, _source=None, sort=None, _index=None
-    ) -> Optional[dict]:
+    async def search_in_elastic(self, body: dict, _source=None, sort=None, _index=None) -> Optional[dict]:
         if not _index:
             _index = self.index
 
@@ -32,9 +28,7 @@ class ServiceMixin:
             order = "desc" if sort_field.startswith("-") else "asc"
             sort_field = f"{sort_field.removeprefix('-')}:{order}"
         try:
-            return await self.storage.search(  # type: ignore
-                index=_index, _source=_source, body=body, sort=sort_field
-            )
+            return await self.storage.search(index=_index, _source=_source, body=body, sort=sort_field)  # type: ignore
         except Exception:
             return None
 
@@ -43,9 +37,7 @@ class ServiceMixin:
         instance = await self._get_result_from_cache(key=target_id)
         if not instance:
             """Если данных нет в кеше, то ищем его в Elasticsearch"""
-            instance = await self._get_data_from_elastic_by_id(
-                target_id=target_id, schema=schema
-            )
+            instance = await self._get_data_from_elastic_by_id(target_id=target_id, schema=schema)
             if not instance:
                 return None
             """ Сохраняем фильм в кеш """

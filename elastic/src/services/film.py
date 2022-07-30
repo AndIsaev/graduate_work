@@ -9,8 +9,7 @@ from fastapi import Depends
 from models.film import ESFilm, ListResponseFilm
 from services.mixins import ServiceMixin
 from services.pagination import get_by_pagination
-from services.utils import (create_hash_key, get_hits,
-                            get_params_films_to_elastic)
+from services.utils import create_hash_key, get_hits, get_params_films_to_elastic
 
 
 class FilmService(ServiceMixin):
@@ -28,17 +27,11 @@ class FilmService(ServiceMixin):
         state_total: int = await self.get_total_count()
         params: str = f"{state_total}{page}{sorting}{page_size}{query}{genre}"
         """ Пытаемся получить данные из кэша """
-        instance = await self._get_result_from_cache(
-            key=create_hash_key(index=self.index, params=params)
-        )
+        instance = await self._get_result_from_cache(key=create_hash_key(index=self.index, params=params))
         if not instance:
             """Если данных нет в кеше, то ищем его в Elasticsearch"""
-            body: dict = get_params_films_to_elastic(
-                page_size=page_size, page=page, genre=genre, query=query
-            )
-            docs: Optional[dict] = await self.search_in_elastic(
-                body=body, _source=_source, sort=sorting
-            )
+            body: dict = get_params_films_to_elastic(page_size=page_size, page=page, genre=genre, query=query)
+            docs: Optional[dict] = await self.search_in_elastic(body=body, _source=_source, sort=sorting)
             if not docs:
                 return None
             """ Получаем фильмы из ES """
@@ -58,9 +51,7 @@ class FilmService(ServiceMixin):
             """ Сохраняем фильмы в кеш """
             data = orjson.dumps([i.dict() for i in films])
             new_param: str = f"{total}{page}{sorting}{page_size}{query}{genre}"
-            await self._put_data_to_cache(
-                key=create_hash_key(index=self.index, params=new_param), instance=data
-            )
+            await self._put_data_to_cache(key=create_hash_key(index=self.index, params=new_param), instance=data)
             """ Сохраняем число фильмов в стейт """
             await self.set_total_count(value=total)
             return get_by_pagination(
@@ -70,9 +61,7 @@ class FilmService(ServiceMixin):
                 page=page,
                 page_size=page_size,
             )
-        films_from_cache: list[ListResponseFilm] = [
-            ListResponseFilm(**row) for row in orjson.loads(instance)
-        ]
+        films_from_cache: list[ListResponseFilm] = [ListResponseFilm(**row) for row in orjson.loads(instance)]
         return get_by_pagination(
             name="films",
             db_objects=films_from_cache,
