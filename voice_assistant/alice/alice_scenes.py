@@ -4,7 +4,7 @@ import sys
 from abc import ABC
 from typing import Optional
 
-from api.fake_db import get_fake_actors, get_fake_film, get_fake_film_list
+from api.fake_db import get_fake_film, get_fake_film_list
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
                        FILM_DESCRIPTION_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST, HELP_ANSWER_LIST,
                        REPEAT_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY, TIMEOUT_ANSWER_LIST,
