@@ -7,7 +7,6 @@ from core.config import PERSON_INDEX
 from db.cache import AbstractCache, get_cache
 from db.storage import AbstractStorage, get_storage
 from fastapi import Depends, HTTPException
-from models.film import ESFilm, ListResponseFilm
 from models.person import DetailResponsePerson, ElasticPerson
 from services.mixins import ServiceMixin
 from services.pagination import get_by_pagination
@@ -29,68 +28,47 @@ class PersonService(ServiceMixin):
         person = await self.get_by_id(target_id=person_id, schema=ElasticPerson)
         if not person:
             """Если персона не найдена, отдаём 404 статус"""
-            raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="person not found")
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail="person not found"
+            )
         return person
 
-    async def get_person_films(self, film_ids: list[str], page: int, page_size: int, person_id: str) -> Optional[dict]:
-        """Получаем число фильмов персоны из стейт"""
-        state_total: int = await self.get_person_films_count()
-        body: dict = {
-            "size": page_size,
-            "from": (page - 1) * page_size,
-            "query": {"ids": {"values": film_ids}},
-        }
-        state_key: str = "person_films"
-        params: str = f"{state_total}{page}{page_size}{person_id}"
-        """ Пытаемся получить фильмы персоны из кэша """
-        instance = await self._get_result_from_cache(key=create_hash_key(index=self.index, params=params))
-        if not instance:
-            docs: Optional[dict] = await self.search_in_elastic(body=body, _index="movies_test")
-            if not docs:
-                return None
-            """ Получаем фильмы персоны из ES """
-            hits = get_hits(docs=docs, schema=ESFilm)
-            """ Получаем число фильмов персоны """
-            total: int = int(docs.get("hits").get("total").get("value", 0))
-            """ Прогоняем данные через pydantic """
-            person_films: list[ListResponseFilm] = [
-                ListResponseFilm(uuid=film.id, title=film.title, imdb_rating=film.imdb_rating, genre=film.genre)
-                for film in hits
-            ]
-            data = orjson.dumps([i.dict() for i in person_films])
-            new_param: str = f"person_films{total}{page}{page_size}{person_id}"
-            await self._put_data_to_cache(key=create_hash_key(index=state_key, params=new_param), instance=data)
-            """ Сохраняем число персон в стейт """
-            await self.set_person_films_count(value=total)
-            return get_by_pagination(
-                name="films",
-                db_objects=person_films,
-                total=total,
-                page=page,
-                page_size=page_size,
-            )
-
-        return get_by_pagination(
-            name="films",
-            db_objects=[ListResponseFilm(**row) for row in orjson.loads(instance)],
-            total=state_total,
-            page=page,
-            page_size=page_size,
-        )
-
-    async def search_person(self, query: str, page: int, page_size: int) -> Optional[dict]:
-        body: dict = {
-            "size": page_size,
-            "from": (page - 1) * page_size,
-            "query": {"bool": {"must": [{"match": {"full_name": query}}]}},
-        }
+    async def search_person(
+        self, query: Optional[str], page: int, page_size: int
+    ) -> Optional[dict]:
+        if not query:
+            body = {
+                "size": page_size,
+                "from": (page - 1) * page_size,
+                "query": {
+                    "bool": {
+                        "must": {
+                            "match_all": {},
+                        }
+                    }
+                },
+            }
+        else:
+            body = {
+                "size": page_size,
+                "from": (page - 1) * page_size,
+                "query": {
+                    "bool": {
+                        "must": {
+                            "match": {"full_name": {"query": query, "fuzziness": "auto"}}
+                        },
+                    }
+                },
+            }
         """ Получаем число персон из стейт """
         state_total: int = await self.get_total_count()
         params: str = f"{state_total}{page}{page_size}{query}"
         """ Пытаемся получить данные из кэша """
         instance = await self._get_result_from_cache(key=create_hash_key(index=self.index, params=params))
         if not instance:
-            docs: Optional[dict] = await self.search_in_elastic(body=body)
+            docs: Optional[dict] = await self.search_in_elastic(
+                body=body, _index="persons"
+            )
             if not docs:
                 return None
             """ Получаем персон из ES """
@@ -102,7 +80,7 @@ class PersonService(ServiceMixin):
                 DetailResponsePerson(
                     uuid=es_person.id,
                     full_name=es_person.full_name,
-                    role=es_person.roles[0],
+                    role=es_person.roles,
                     film_ids=es_person.film_ids,
                 )
                 for es_person in hits

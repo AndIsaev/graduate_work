@@ -43,7 +43,7 @@ class PersonSearchParam:
     def __init__(
         self,
         query: str = Query(
-            default="John",
+            default=None,
             example="Jake",
             title="Запрос",
             description="Осуществляет поиск по имени персоны",
