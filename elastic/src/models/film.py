@@ -1,6 +1,6 @@
 from typing import Optional
 
-from models.genre import FilmGenre, ElasticGenre
+from models.genre import ElasticGenre, FilmGenre
 from models.mixin import BaseModelMixin, PaginationMixin
 from models.person import FilmPerson
 from pydantic import BaseModel

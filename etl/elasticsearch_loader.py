@@ -33,7 +33,9 @@ class ElasticSearchLoader:
     def bulk_data_to_elasticsearch(self, index_name: str) -> None:
         self.client.bulk(index=index_name, body=self.data, refresh=True)
 
-    def load_data_to_elasticsearch(self, data_from_postgres: list, index_name: str) -> None:
+    def load_data_to_elasticsearch(
+        self, data_from_postgres: list, index_name: str
+    ) -> None:
         """
         Загружаем данные пачками в Elasticsearch предварительно присваивая записям id.
         """
@@ -46,4 +48,6 @@ class ElasticSearchLoader:
             self.data.append(row)
             self.bulk_data_to_elasticsearch(index_name=index_name)
             self.data.clear()
-        State(JsonFileStorage("postgres_data.txt")).set_state(str(self.key), value=str(datetime.now()))
+        State(JsonFileStorage("postgres_data.txt")).set_state(
+            str(self.key), value=str(datetime.now())
+        )

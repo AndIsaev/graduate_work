@@ -25,7 +25,9 @@ class GenreService(ServiceMixin):
         state_total: int = await self.get_total_count()
         params: str = f"{state_total}{page}{page_size}"
         """ Пытаемся получить данные из кэша """
-        instance = await self._get_result_from_cache(key=create_hash_key(index=self.index, params=params))
+        instance = await self._get_result_from_cache(
+            key=create_hash_key(index=self.index, params=params)
+        )
         if not instance:
             docs: Optional[dict] = await self.search_in_elastic(body=body)
             if not docs:
@@ -35,11 +37,15 @@ class GenreService(ServiceMixin):
             """ Получаем число жанров """
             total: int = int(docs.get("hits").get("total").get("value", 0))
             """ Прогоняем данные через pydantic """
-            genres: list[FilmGenre] = [FilmGenre(uuid=es_genre.id, name=es_genre.name) for es_genre in hits]
+            genres: list[FilmGenre] = [
+                FilmGenre(uuid=es_genre.id, name=es_genre.name) for es_genre in hits
+            ]
             """ Сохраняем жанры в кеш """
             data = orjson.dumps([i.dict() for i in genres])
             new_param: str = f"{total}{page}{page_size}"
-            await self._put_data_to_cache(key=create_hash_key(index=self.index, params=new_param), instance=data)
+            await self._put_data_to_cache(
+                key=create_hash_key(index=self.index, params=new_param), instance=data
+            )
             """ Сохраняем число жанров в стейт """
             await self.set_total_count(value=total)
             return get_by_pagination(
