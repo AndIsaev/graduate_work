@@ -17,6 +17,7 @@ PERSON_INDEX_BODY: dict = {
                 "dynamic": "strict",
                 "properties": {
                     "id": {"type": "keyword"},
+                    "title": {"type": "text", "analyzer": "ru_en"},
                 },
             },
         },
