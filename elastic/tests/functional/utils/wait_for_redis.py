@@ -34,10 +34,7 @@ async def wait_for_redis():
             redis_client.close()
             await redis_client.wait_closed()
             if count == 10:
-                logging.info(
-                    f"{datetime.now()}\n\n"
-                    f"Исчерпано максимальное количество подключений={count}\n"
-                )
+                logging.info(f"{datetime.now()}\n\n" f"Исчерпано максимальное количество подключений={count}\n")
                 break
 
 

@@ -21,9 +21,7 @@ async def genres_list(
     page: int = 1,
     page_size: int = 10,
 ) -> GenrePagination:
-    genres: Optional[dict] = await genre_service.get_genres_list(
-        page=page, page_size=page_size
-    )
+    genres: Optional[dict] = await genre_service.get_genres_list(page=page, page_size=page_size)
     if not genres:
         """Если жанры не найдены, отдаём 404 статус"""
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="genres not found")
@@ -38,9 +36,7 @@ async def genres_list(
     response_description="Название жанра",
     tags=["genre_service"],
 )
-async def genre_details(
-    genre_id: str, genre_service: GenreService = Depends(get_genre_service)
-) -> DetailResponseGenre:
+async def genre_details(genre_id: str, genre_service: GenreService = Depends(get_genre_service)) -> DetailResponseGenre:
     genre = await genre_service.get_by_id(target_id=genre_id, schema=ElasticGenre)
     if not genre:
         """Если жанр не найден, отдаём 404 статус"""

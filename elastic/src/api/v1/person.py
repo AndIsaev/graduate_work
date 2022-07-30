@@ -24,14 +24,10 @@ async def person_search(
     page: int = 1,
     page_size: int = 10,
 ) -> PersonPagination:
-    persons: Optional[dict] = await person_service.search_person(
-        query=params.query, page=page, page_size=page_size
-    )
+    persons: Optional[dict] = await person_service.search_person(query=params.query, page=page, page_size=page_size)
     if not persons:
         """Если персоны не найдены, отдаём 404 статус"""
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail="persons not found"
-        )
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="persons not found")
     return PersonPagination(**persons)
 
 
@@ -59,8 +55,7 @@ async def person_details(
     path="/{person_id}/films/",
     response_model=FilmPagination,
     summary="Поиск персоны по его ID и выдача всех его кинопроизведений",
-    description="Поиск персоны по его ID и выдача всех его кинопроизведений,"
-    "в которых он принимал участие",
+    description="Поиск персоны по его ID и выдача всех его кинопроизведений," "в которых он принимал участие",
     response_description="Название жанра",
     tags=["person_service"],
 )
@@ -76,7 +71,5 @@ async def get_person_films(
     )
     if not person_films:
         """Если персона не найдена, отдаём 404 статус"""
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail="person's films not found"
-        )
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="person's films not found")
     return FilmPagination(**person_films)

@@ -50,9 +50,7 @@ film_work_data: list[dict] = [
             },
             {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"},
         ],
-        "directors": [
-            {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-        ],
+        "directors": [{"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
     },
     {
         "id": "118fd71b-93cd-4de5-95a4-e1485edad30e",
@@ -129,9 +127,7 @@ film_work_data: list[dict] = [
                 "full_name": "Michael Arndt",
             },
         ],
-        "directors": [
-            {"id": "a1758395-9578-41af-88b8-3f9456e6d938", "full_name": "J.J. Abrams"}
-        ],
+        "directors": [{"id": "a1758395-9578-41af-88b8-3f9456e6d938", "full_name": "J.J. Abrams"}],
     },
     {
         "id": "025c58cd-1b7e-43be-9ffb-8571a613579b",
@@ -210,12 +206,8 @@ film_work_data: list[dict] = [
                 "full_name": "Natalie Portman",
             },
         ],
-        "writers": [
-            {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-        ],
-        "directors": [
-            {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-        ],
+        "writers": [{"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
+        "directors": [{"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
     },
     {
         "id": "12a8279d-d851-4eb9-9d64-d690455277cc",
@@ -243,9 +235,7 @@ film_work_data: list[dict] = [
             {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"},
             {"id": "b66db341-5dcd-4aaf-b536-050b59979357", "full_name": "Rian Johnson"},
         ],
-        "directors": [
-            {"id": "b66db341-5dcd-4aaf-b536-050b59979357", "full_name": "Rian Johnson"}
-        ],
+        "directors": [{"id": "b66db341-5dcd-4aaf-b536-050b59979357", "full_name": "Rian Johnson"}],
     },
     {
         "id": "1b7d7c64-8be8-47db-8924-23029a9878a9",
@@ -302,9 +292,7 @@ film_work_data: list[dict] = [
                 "full_name": "Nicholas Meyer",
             },
         ],
-        "directors": [
-            {"id": "5a3d0299-2df2-4070-9fda-65ff4dfa863c", "full_name": "Leonard Nimoy"}
-        ],
+        "directors": [{"id": "5a3d0299-2df2-4070-9fda-65ff4dfa863c", "full_name": "Leonard Nimoy"}],
     },
     {
         "id": "d1099968-805e-4a2b-a2ec-18bbde1201ac",
@@ -354,9 +342,7 @@ film_work_data: list[dict] = [
                 "full_name": "Matthew Senreich",
             },
         ],
-        "directors": [
-            {"id": "46befdf3-165c-46b3-b1ae-2356af4f8392", "full_name": "Seth Green"}
-        ],
+        "directors": [{"id": "46befdf3-165c-46b3-b1ae-2356af4f8392", "full_name": "Seth Green"}],
     },
     {
         "id": "8a96580a-6b7b-422e-b4fb-694eaa269ff7",
@@ -390,9 +376,7 @@ film_work_data: list[dict] = [
             },
             {"id": "ad12504e-1bb3-4805-ab87-2e84147e2a64", "full_name": "Joel Kane"},
         ],
-        "directors": [
-            {"id": "28f8edaf-9c20-4fc2-914a-da04c15c88cc", "full_name": "Anthony Mann"}
-        ],
+        "directors": [{"id": "28f8edaf-9c20-4fc2-914a-da04c15c88cc", "full_name": "Anthony Mann"}],
     },
     {
         "id": "e42d300d-d671-4877-aa3f-d7fb1ced52ad",
@@ -477,9 +461,7 @@ film_work_data: list[dict] = [
             {"id": "8b89934d-72eb-4676-b146-73100e7e54aa", "full_name": "Buronson"},
             {"id": "9c6ec795-4d9c-4dcc-8cf5-c78470e9fc52", "full_name": "Peter Atkins"},
         ],
-        "directors": [
-            {"id": "2e0fbfa6-d8fc-4ecd-8df9-d8e8e7f538e3", "full_name": "Tony Randel"}
-        ],
+        "directors": [{"id": "2e0fbfa6-d8fc-4ecd-8df9-d8e8e7f538e3", "full_name": "Tony Randel"}],
     },
     {
         "id": "d718c261-e954-4615-97f8-9ba67cd823a9",
@@ -487,9 +469,7 @@ film_work_data: list[dict] = [
         "description": "An experimental film from Stan Brakhage in which a man and his dog ascend a "
         "wooded mountain.",
         "imdb_rating": 6.4,
-        "genre": [
-            {"id": "6d141ad2-d407-4252-bda4-95590aaf062a", "name": "Documentary"}
-        ],
+        "genre": [{"id": "6d141ad2-d407-4252-bda4-95590aaf062a", "name": "Documentary"}],
         "actors": [
             {
                 "id": "b8ef2cff-b618-4e0a-b215-76bbf417a7e2",
@@ -500,12 +480,8 @@ film_work_data: list[dict] = [
                 "full_name": "Jane Brakhage",
             },
         ],
-        "writers": [
-            {"id": "b8ef2cff-b618-4e0a-b215-76bbf417a7e2", "full_name": "Stan Brakhage"}
-        ],
-        "directors": [
-            {"id": "b8ef2cff-b618-4e0a-b215-76bbf417a7e2", "full_name": "Stan Brakhage"}
-        ],
+        "writers": [{"id": "b8ef2cff-b618-4e0a-b215-76bbf417a7e2", "full_name": "Stan Brakhage"}],
+        "directors": [{"id": "b8ef2cff-b618-4e0a-b215-76bbf417a7e2", "full_name": "Stan Brakhage"}],
     },
     {
         "id": "319df05f-c5d9-4389-a84a-a43e695bf048",
@@ -549,9 +525,7 @@ film_work_data: list[dict] = [
                 "full_name": "Andrew Motion",
             },
         ],
-        "directors": [
-            {"id": "08baac48-370c-43a1-8bc2-4dc6cd597333", "full_name": "Jane Campion"}
-        ],
+        "directors": [{"id": "08baac48-370c-43a1-8bc2-4dc6cd597333", "full_name": "Jane Campion"}],
     },
     {
         "id": "3b914679-1f5e-4cbd-8044-d13d35d5236c",
@@ -585,12 +559,8 @@ film_work_data: list[dict] = [
                 "full_name": "Natalie Portman",
             },
         ],
-        "writers": [
-            {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-        ],
-        "directors": [
-            {"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-        ],
+        "writers": [{"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
+        "directors": [{"id": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
     },
     {
         "id": "201c0ec8-2add-4d55-90e9-6596afd6dfe9",
@@ -630,9 +600,7 @@ film_work_data: list[dict] = [
                 "full_name": "Juha Nevalainen",
             },
         ],
-        "directors": [
-            {"id": "2a97d28c-46a8-4648-873a-6456b03aa2b4", "full_name": "Edvin Laine"}
-        ],
+        "directors": [{"id": "2a97d28c-46a8-4648-873a-6456b03aa2b4", "full_name": "Edvin Laine"}],
     },
     {
         "id": "8796d72e-0eb8-443a-80cf-100dad4de2d4",
@@ -664,9 +632,7 @@ film_work_data: list[dict] = [
                 "full_name": "Mitsuhiro Takano",
             }
         ],
-        "directors": [
-            {"id": "6e1a0547-963e-4d47-bf84-aea05783f954", "full_name": "Takao Shimizu"}
-        ],
+        "directors": [{"id": "6e1a0547-963e-4d47-bf84-aea05783f954", "full_name": "Takao Shimizu"}],
     },
 ]
 
@@ -715,9 +681,7 @@ expected_film_data = {
         {"uuid": "8c220eeb-8022-44d5-8435-1f8edf258ac7", "full_name": "Jonathan Hales"},
         {"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"},
     ],
-    "directors": [
-        {"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-    ],
+    "directors": [{"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
 }
 
 not_found_film_data: dict = {
@@ -749,7 +713,5 @@ not_found_film_data: dict = {
         {"uuid": "8c220eeb-8022-44d5-8435-1f8edf258ac7", "full_name": "Jonathan Hales"},
         {"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"},
     ],
-    "directors": [
-        {"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}
-    ],
+    "directors": [{"uuid": "a5a8f573-3cee-4ccc-8a2b-91cb9f55250a", "full_name": "George Lucas"}],
 }

@@ -33,7 +33,7 @@ async def search_film_list(
         genre=params.genre_filter,
     )
     if not films:
-        """Если жанры не найдены, отдаём 404 статус"""
+        """Если фильмы не найдены, отдаём 404 статус"""
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="films not found")
     return FilmPagination(**films)
 
@@ -46,27 +46,20 @@ async def search_film_list(
     response_description="Полная информация о фильме",
     tags=["film_service"],
 )
-async def film_details(
-    film_id: str, film_service: FilmService = Depends(get_film_service)
-) -> DetailResponseFilm:
+async def film_details(film_id: str, film_service: FilmService = Depends(get_film_service)) -> DetailResponseFilm:
     film = await film_service.get_by_id(target_id=film_id, schema=ESFilm)
     if not film:
         """Если фильм не найден, отдаём 404 статус"""
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="film not found")
-    genre_list: list[FilmGenre] = [
-        FilmGenre(uuid=genre.get("id"), name=genre.get("name")) for genre in film.genre
-    ]
+    genre_list: list[FilmGenre] = [FilmGenre(uuid=genre.get("id"), name=genre.get("name")) for genre in film.genre]
     actors_list: list[FilmPerson] = [
-        FilmPerson(uuid=actor.get("id"), full_name=actor.get("full_name"))
-        for actor in film.actors
+        FilmPerson(uuid=actor.get("id"), full_name=actor.get("full_name")) for actor in film.actors
     ]
     writers_list: list[FilmPerson] = [
-        FilmPerson(uuid=writer.get("id"), full_name=writer.get("full_name"))
-        for writer in film.writers
+        FilmPerson(uuid=writer.get("id"), full_name=writer.get("full_name")) for writer in film.writers
     ]
     directors_list: list[FilmPerson] = [
-        FilmPerson(uuid=director.get("id"), full_name=director.get("full_name"))
-        for director in film.directors
+        FilmPerson(uuid=director.get("id"), full_name=director.get("full_name")) for director in film.directors
     ]
     return DetailResponseFilm(
         uuid=film.id,
