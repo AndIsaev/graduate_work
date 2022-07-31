@@ -66,7 +66,7 @@
 
 
 # Схема
-![Schema](https://github.com/AndIsaev/graduate_work/schema/schema.png)
+![Schema](https://github.com/AndIsaev/graduate_work/blob/develop/schema/schema.png)
 
 
 # Запустить проект
