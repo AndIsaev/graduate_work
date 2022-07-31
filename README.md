@@ -3,7 +3,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=badge&logo=postgresql&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=badge&logo=django&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-14354C?style=badge&logo=python&logoColor=white)
-![Elastic_Search](https://img.shields.io/badge/Elastic_Search-005571?style=badge&logo=elasticsearch&logoColor=white)
+![Elasticsearch](https://badges.aleen42.com/src/elasticsearch.svg)
 ![Fastapi](https://img.shields.io/badge/Fastapi-000000?style=badge&logo=fastapi&logoColor=white)
 ![Nginx](https://img.shields.io/badge/Nginx-000000?style=badge&logo=nginx&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=badge&logo=docker&logoColor=white)
