@@ -13,9 +13,9 @@ class Scene(ABC):
     @abstractmethod
     def reply(self, request: Request) -> dict:
         """Генерация ответа сцены."""
-        raise NotImplementedError()
+        pass
 
     @abstractmethod
     def _make_response(self, text: str, **kwargs: Any) -> dict:
         """Генерация ответа в необходимой для voice assistant структуре."""
-        raise NotImplementedError()
+        pass

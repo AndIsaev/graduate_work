@@ -11,9 +11,9 @@ class Request(ABC):
     @property
     @abstractmethod
     def intents(self) -> dict:
-        raise NotImplementedError()
+        pass
 
     @property
     @abstractmethod
     def type(self) -> str:
-        raise NotImplementedError()
+        pass
