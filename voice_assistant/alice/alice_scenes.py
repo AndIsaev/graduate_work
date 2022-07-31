@@ -4,7 +4,7 @@ import sys
 from abc import ABC
 from typing import Optional
 
-from alice.utils import get_alice_intent_genre
+from alice.utils import ENTITY_GENRE
 from api.fake_db import get_fake_film
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
                        FILM_DESCRIPTION_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST, HELP_ANSWER_LIST,
@@ -200,7 +200,7 @@ class TopFilmsScene(AliceScene):
             request.intents.get("top_films").get("slots", {}).get("genre", {}).get("value", {})
         )
         if genre_intent:
-            genre_name = get_alice_intent_genre(genre_intent)
+            genre_name = ENTITY_GENRE.get(genre_intent, None)
             films = es_api.find_top_films_by_genre(genre_name=genre_name)
         else:
             films = es_api.find_top_films()
