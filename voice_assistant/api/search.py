@@ -5,6 +5,7 @@ from typing import Optional
 from uuid import UUID
 
 import requests
+from loguru import logger
 
 from .models import BaseFilm, Film, Person
 
@@ -18,7 +19,7 @@ class SearchConnector:
 
     def find_film_by_name(self, film_name: str) -> Optional[list[BaseFilm]]:
         films = self._find_films(film_name=film_name, page=1, size=1)
-        print(f"find_film_by_name films: {films}")
+        logger.debug(f"find_film_by_name films: {films}")
         if films:
             return self._find_film_by_uuid(films[0].uuid)
         return None
@@ -27,7 +28,7 @@ class SearchConnector:
         return self._find_films(size=5)
 
     def find_top_films_by_genre(self, genre_name: str) -> Optional[list[BaseFilm]]:
-        print(f"Genre from scene: {genre_name}")
+        logger.debug(f"Genre from scene: {genre_name}")
         return self._find_films(genre_name=genre_name)
 
     def find_film_actors(
@@ -80,7 +81,7 @@ class SearchConnector:
         if response.status_code != HTTPStatus.OK:
             return None
         response_json = response.json()
-        print(f"find_film response_json: {response_json}")
+        logger.info(f"find_film response_json: {response_json}")
         if not response_json.get("total", 0):
             return None
         return [BaseFilm(**row) for row in response_json.get("films", [])]
@@ -150,7 +151,7 @@ class SearchConnector:
         if response.status_code != HTTPStatus.OK:
             return None
         response_json = response.json()
-        print(f"_get_genre_uuid_by_name response_json: {response_json}")
+        logger.info(f"_get_genre_uuid_by_name response_json: {response_json}")
         if not response_json.get("total", 0):
             return None
         for genre in response_json["genres"]:

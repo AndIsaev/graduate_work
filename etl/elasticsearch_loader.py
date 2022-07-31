@@ -24,7 +24,7 @@ class ElasticSearchLoader:
             try:
                 self.client.indices.create(index=index_name, body=index_body)
             except Exception as e:
-                print(e)
+                logger.warning(e)
             logger.warning(f"{datetime.now()}\n\nиндекс {index_name} создан")
         else:
             logger.warning(f"{datetime.now()}\n\nиндекс {index_name} был создан ранее")

@@ -11,7 +11,7 @@ def load_data(ps_2: _connection) -> None:
     psycopg2_cursor = ps_2.cursor()
 
     for table in tables:
-        psycopg2_cursor.execute(f"select count(*) from {table}")
+        psycopg2_cursor.execute(f"SELECT COUNT(*) FROM {table}")
         results = psycopg2_cursor.fetchone()[0]
 
         if results == 0:

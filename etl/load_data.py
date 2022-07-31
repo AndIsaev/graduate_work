@@ -21,9 +21,7 @@ def save_data_to_elastic() -> None:
     logger.info(f"{datetime.now()}\n\nустановлена связь с ElasticSearch.")
 
     with psycopg2.connect(**dsn) as conn:
-        logger.info(
-            f"{datetime.now()}\n\nустановлена связь с PostgreSQL. Начинаем загрузку данных"
-        )
+        logger.info(f"{datetime.now()}\n\nустановлена связь с PostgreSQL. Начинаем загрузку данных")
 
         postgres_loader = PostgresLoader(pg_conn=conn)
         for data in postgres_loader.loader_from_postgresql():
@@ -31,9 +29,7 @@ def save_data_to_elastic() -> None:
 
             elastic.create_index(index_name=key, index_body=ES_SCHEMAS[key])
 
-            logger.info(
-                f"{datetime.now()}\n\nНачинаем загрузку данных в ElasticSearch, индекс: {key}"
-            )
+            logger.info(f"{datetime.now()}\n\nНачинаем загрузку данных в ElasticSearch, индекс: {key}")
 
             batch = 50
             count = len(data["result"])
@@ -42,19 +38,16 @@ def save_data_to_elastic() -> None:
 
             while count != 0:
                 if count >= batch:
-                    for row in data["result"][index: index + batch]:
+                    for row in data["result"][index : index + batch]:
                         transformed_data.append(dict(zip(COLUMNS[key], row)))
                         index += 1
                     count -= batch
-                    elastic.load_data_to_elasticsearch(
-                        data_from_postgres=transformed_data, index_name=key
-                    )
+                    elastic.load_data_to_elasticsearch(data_from_postgres=transformed_data, index_name=key)
                     transformed_data.clear()
                 else:
                     elastic.load_data_to_elasticsearch(
                         data_from_postgres=[
-                            dict(zip(COLUMNS[key], row))
-                            for row in data["result"][index: index + count]
+                            dict(zip(COLUMNS[key], row)) for row in data["result"][index : index + count]
                         ],
                         index_name=key,
                     )
