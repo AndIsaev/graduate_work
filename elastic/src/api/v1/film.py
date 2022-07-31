@@ -4,7 +4,6 @@ from typing import Optional
 from api.v1.utils import FilmQueryParams
 from fastapi import APIRouter, Depends, HTTPException
 from models.film import DetailResponseFilm, ESFilm, FilmPagination
-from models.genre import FilmGenre
 from models.person import FilmPerson
 from services.film import FilmService, get_film_service
 
