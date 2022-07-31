@@ -16,5 +16,3 @@ def decapitalize(text):
 
 def get_person_names(persons: list[Person]):
     return [person.full_name for person in persons if person]
-
-

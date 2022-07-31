@@ -4,7 +4,7 @@ import sys
 from abc import ABC
 from typing import Optional
 
-from api.fake_db import get_fake_film, get_fake_film_list
+from api.fake_db import get_fake_film
 from constants import (
     ACTOR_ANSWER_LIST,
     DIRECTOR_ANSWER_LIST,
@@ -122,11 +122,15 @@ class ActorScene(AliceScene):
         actors = es_api.find_film_actors(film_name=film_name)
         print(f"Actors are {actors}")
         if not actors:
-            return self._make_response(f"К сожалению, не нашла актеров фильма: {film_name}")
+            return self._make_response(
+                f"К сожалению, не нашла актеров фильма: {film_name}"
+            )
         actor_names = get_person_names(actors)
         print(f"Actor names are {actor_names}")
         response = self._make_response(
-            random.choice(ACTOR_ANSWER_LIST).format(film=film_name, actors=", ".join(actor_names))
+            random.choice(ACTOR_ANSWER_LIST).format(
+                film=film_name, actors=", ".join(actor_names)
+            )
         )
         print(f"Response of ActorScene: {response}")
         return response
@@ -142,7 +146,9 @@ class DirectorScene(AliceScene):
             print(f"Current film is {film_name}")
         elif director_of_named_film := request.intents.get("director_of_named_film"):
             # get named film
-            film_name: str = director_of_named_film.get("slots").get("film").get("value")
+            film_name: str = (
+                director_of_named_film.get("slots").get("film").get("value")
+            )
             print(f"Named film is {film_name}")
         if film_name:
             film_name = decapitalize(film_name)
@@ -151,11 +157,15 @@ class DirectorScene(AliceScene):
         directors = es_api.find_film_directors(film_name=film_name, limit=1)
         print(f"Actors are {directors}")
         if not directors:
-            return self._make_response(f"К сожалению, не нашла режиссера фильма: {film_name}")
+            return self._make_response(
+                f"К сожалению, не нашла режиссера фильма: {film_name}"
+            )
         director_names = get_person_names(directors)
         print(f"Director names are {director_names}")
         response = self._make_response(
-            random.choice(DIRECTOR_ANSWER_LIST).format(film=film_name, director=", ".join(director_names))
+            random.choice(DIRECTOR_ANSWER_LIST).format(
+                film=film_name, director=", ".join(director_names)
+            )
         )
         print(f"Response of DirectorScene: {response}")
         return response
@@ -169,9 +179,13 @@ class FilmDescriptionScene(AliceScene):
             # get current film
             film_name = get_fake_film()
             print(f"Current film is {film_name}")
-        elif description_of_named_film := request.intents.get("description_of_named_film"):
+        elif description_of_named_film := request.intents.get(
+            "description_of_named_film"
+        ):
             # get named film
-            film_name: str = description_of_named_film.get("slots").get("film").get("value")
+            film_name: str = (
+                description_of_named_film.get("slots").get("film").get("value")
+            )
             print(f"Named film is {film_name}")
         if not film_name:
             return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
@@ -208,7 +222,10 @@ class TopFilmsScene(AliceScene):
     def reply(self, request: Request) -> dict:
         print("Start TopFilmsScene.reply method")
         genre_intent: Optional[str] = (
-            request.intents.get("top_films").get("slots", {}).get("genre", {}).get("value", {})
+            request.intents.get("top_films")
+            .get("slots", {})
+            .get("genre", {})
+            .get("value", {})
         )
         if genre_intent:
             genre_name = get_alice_intent_genre(genre_intent)
@@ -219,7 +236,9 @@ class TopFilmsScene(AliceScene):
             return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
         film_names = [_film.title for _film in films]
         print(f"Top films are {films}")
-        response = self._make_response(random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_names)))
+        response = self._make_response(
+            random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_names))
+        )
         print(f"Response of TopFilmsScene: {response}")
         return response
 
@@ -242,11 +261,15 @@ def move_to_scene(request: Request) -> AliceScene:
         return ShortWelcomeScene()
     elif intents.get("help"):
         return HelpScene()
-    elif intents.get("description_of_current_film") or intents.get("description_of_named_film"):
+    elif intents.get("description_of_current_film") or intents.get(
+        "description_of_named_film"
+    ):
         return FilmDescriptionScene()
     elif intents.get("top_films"):
         return TopFilmsScene()
-    elif intents.get("director_of_current_film") or intents.get("director_of_named_film"):
+    elif intents.get("director_of_current_film") or intents.get(
+        "director_of_named_film"
+    ):
         return DirectorScene()
     elif intents.get("actor_of_named_film") or intents.get("actor_of_current_film"):
         return ActorScene()

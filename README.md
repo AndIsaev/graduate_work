@@ -9,6 +9,7 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=badge&logo=docker&logoColor=white)
 ![Gunicorn](https://img.shields.io/badge/Gunicorn-000000?.svg?style=Gunicorn&logo=Gunicorn&logoColor=green)
 
+###[Ссылка на проект](https://github.com/AndIsaev/graduate_work)
 
 # Техническое задание дипломной работы "Голосовой ассистент"
 

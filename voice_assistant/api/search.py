@@ -141,7 +141,7 @@ class SearchConnector:
 
     def _get_genre_uuid_by_name(self, genre_name: str) -> Optional[UUID]:
         response = self._get_response(
-            f"genre/",
+            "genre/",
             query={
                 "page": 1,
                 "page_size": 100,

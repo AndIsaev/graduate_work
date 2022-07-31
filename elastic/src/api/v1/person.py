@@ -23,10 +23,14 @@ async def person_search(
     page: int = 1,
     page_size: int = 10,
 ) -> PersonPagination:
-    persons: Optional[dict] = await person_service.search_person(query=params.query, page=page, page_size=page_size)
+    persons: Optional[dict] = await person_service.search_person(
+        query=params.query, page=page, page_size=page_size
+    )
     if not persons:
         """Если персоны не найдены, отдаём 404 статус"""
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="persons not found")
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail="persons not found"
+        )
     return PersonPagination(**persons)
 
 
