@@ -68,6 +68,7 @@
 
 # Схема
 ![Schema](https://github.com/AndIsaev/graduate_work/blob/develop/schema/schema.png)
+### [Ссылка на ТЗ](https://docs.google.com/document/d/1KLGApO-3hlxcWsaC9enpWmk9SCRHmAzqJLV7kN7McPs/edit#)
 
 
 # Запустить проект
