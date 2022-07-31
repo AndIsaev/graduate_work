@@ -53,9 +53,6 @@ async def film_details(
     if not film:
         """Если фильм не найден, отдаём 404 статус"""
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="film not found")
-    genre_list: list[FilmGenre] = [
-        FilmGenre(uuid=genre.get("id"), name=genre.get("name")) for genre in film.genre
-    ]
     actors_list: list[FilmPerson] = [
         FilmPerson(uuid=actor.get("id"), full_name=actor.get("full_name"))
         for actor in film.actors
