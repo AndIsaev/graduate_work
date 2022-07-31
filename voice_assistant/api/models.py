@@ -14,6 +14,11 @@ class Genre(BaseModel):
     name: str
 
 
+class FilmGenre(BaseModel):
+    id: str
+    name: str
+
+
 class BaseFilm(BaseModel):
     """Фильм в списке."""
 
@@ -21,12 +26,12 @@ class BaseFilm(BaseModel):
     title: str
     imdb_rating: float
     description: str
+    genre: Optional[list[FilmGenre]]
 
 
 class Film(BaseFilm):
     """Подробная информация о фильме."""
 
-    genre: Optional[list[Genre]]
     actors: Optional[list[Person]]
     writers: Optional[list[Person]]
     directors: Optional[list[Person]]

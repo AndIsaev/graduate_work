@@ -27,9 +27,7 @@ async def movies_index() -> None:
     index: str = Settings.MOVIES_INDEX
     row_data = testdata.film_work_data
 
-    await es_index_loader(
-        index=index, index_body=es_index.FILM_WORK_INDEX_BODY, row_data=row_data
-    )
+    await es_index_loader(index=index, index_body=es_index.FILM_WORK_INDEX_BODY, row_data=row_data)
 
 
 if __name__ == "__main__":

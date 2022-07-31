@@ -42,9 +42,7 @@ async def session():
 
 @pytest.fixture()
 async def redis_cache():
-    cache = await aioredis.create_redis_pool(
-        (Settings.REDIS_HOST, Settings.REDIS_PORT), minsize=10, maxsize=20
-    )
+    cache = await aioredis.create_redis_pool((Settings.REDIS_HOST, Settings.REDIS_PORT), minsize=10, maxsize=20)
     await cache.flushall()
     yield cache
     cache.close()

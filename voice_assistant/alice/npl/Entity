@@ -15,6 +15,7 @@ entity Genres:
             исторический
         comedy:
             комедия
+        music_comedy:
             музыкальная комедия
         melodrama:
             мелодрама
@@ -29,8 +30,10 @@ entity Genres:
             трагедия
         thriller:
             триллер
-        fantasy:
+        fantastic:
             фантастический
+            фантастика
+        fantasy:
             фентези
         disaster:
             катастрофа

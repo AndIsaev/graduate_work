@@ -3,10 +3,7 @@ from http import HTTPStatus
 
 import pytest
 
-from elastic.tests.functional.schemas.genre_schema import (
-    FilmGenreValidation,
-    GenrePaginationValidation,
-)
+from elastic.tests.functional.schemas.genre_schema import FilmGenreValidation, GenrePaginationValidation
 from elastic.tests.functional.settings import Settings
 from elastic.tests.functional.testdata.data_genre import genre_data
 from elastic.tests.functional.utils.hash_key_creater import create_hash_key
@@ -33,9 +30,7 @@ async def test_list_genre(genre_index, make_get_request, redis_cache):
     page: int = response_body.get("page")
     page_size: int = response_body.get("page_size")
     total: int = response_body.get("total")
-    key: str = create_hash_key(
-        index=Settings.GENRE_INDEX, params=f"{total}{page}{page_size}"
-    )
+    key: str = create_hash_key(index=Settings.GENRE_INDEX, params=f"{total}{page}{page_size}")
     assert await redis_cache.get(key=key) is not None
     await redis_cache.flushall()
     assert await redis_cache.get(key=key) is None

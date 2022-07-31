@@ -4,9 +4,7 @@ from request import Request
 class AliceRequest(Request):
     @property
     def intents(self) -> dict:
-        _intents = (
-            self.request_body.get("request", {}).get("nlu", {}).get("intents", {})
-        )
+        _intents = self.request_body.get("request", {}).get("nlu", {}).get("intents", {})
         print(f"Intents: {_intents}")
         return _intents
 
