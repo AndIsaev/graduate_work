@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.get(
-    path="/search",
+    path="/",
     response_model=PersonPagination,
     summary="Поиск персоны по его имени",
     description="Поиск персоны по его имени",
