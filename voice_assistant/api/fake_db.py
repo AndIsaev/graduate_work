@@ -51,11 +51,7 @@ def get_fake_actors(count: int = 3):
     for _ in range(count):
         person = random.choice(person_list)
         person_list.remove(person)
-        actors.append(
-            Person(
-                **{"uuid": "e42d300d-d671-4877-aa3f-d7fb1ced52ad", "full_name": person}
-            )
-        )
+        actors.append(Person(**{"uuid": "e42d300d-d671-4877-aa3f-d7fb1ced52ad", "full_name": person}))
     return actors
 
 
@@ -67,9 +63,7 @@ def get_fake_film_data(film_name: str):
             "description": "Борьба добра против зла.",
             "imdb_rating": 7.9,
             "genre": [
-                Genre(
-                    **{"uuid": "e52d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Экшен"}
-                ),
+                Genre(**{"uuid": "e52d330d-d671-4877-aa3f-d7fb1ced52ad", "name": "Экшен"}),
                 Genre(
                     **{
                         "uuid": "e62d330d-d671-4877-aa3f-d7fb1ced52ad",

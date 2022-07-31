@@ -1,9 +1,7 @@
 import math
 
 
-def get_by_pagination(
-    name: str, db_objects, total: int, page: int = 1, page_size: int = 20
-) -> dict:
+def get_by_pagination(name: str, db_objects, total: int, page: int = 1, page_size: int = 20) -> dict:
     """
     This method will try to paginate objects by page number
     :param name: name of model

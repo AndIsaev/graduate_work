@@ -19,9 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "updated_at",
-                    models.DateTimeField(
-                        auto_created=True, auto_now=True, verbose_name="date updated"
-                    ),
+                    models.DateTimeField(auto_created=True, auto_now=True, verbose_name="date updated"),
                 ),
                 (
                     "created_at",
@@ -47,9 +45,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "creation_date",
-                    models.DateField(
-                        blank=True, null=True, verbose_name="created date the film"
-                    ),
+                    models.DateField(blank=True, null=True, verbose_name="created date the film"),
                 ),
                 (
                     "certificate",
@@ -96,9 +92,7 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "updated_at",
-                    models.DateTimeField(
-                        auto_created=True, auto_now=True, verbose_name="date updated"
-                    ),
+                    models.DateTimeField(auto_created=True, auto_now=True, verbose_name="date updated"),
                 ),
                 (
                     "created_at",
@@ -138,9 +132,7 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "updated_at",
-                    models.DateTimeField(
-                        auto_created=True, auto_now=True, verbose_name="date updated"
-                    ),
+                    models.DateTimeField(auto_created=True, auto_now=True, verbose_name="date updated"),
                 ),
                 (
                     "created_at",

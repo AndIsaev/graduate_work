@@ -28,14 +28,10 @@ class PersonService(ServiceMixin):
         person = await self.get_by_id(target_id=person_id, schema=ElasticPerson)
         if not person:
             """Если персона не найдена, отдаём 404 статус"""
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="person not found"
-            )
+            raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="person not found")
         return person
 
-    async def search_person(
-        self, query: Optional[str], page: int, page_size: int
-    ) -> Optional[dict]:
+    async def search_person(self, query: Optional[str], page: int, page_size: int) -> Optional[dict]:
         if not query:
             body = {
                 "size": page_size,
@@ -54,11 +50,7 @@ class PersonService(ServiceMixin):
                 "from": (page - 1) * page_size,
                 "query": {
                     "bool": {
-                        "must": {
-                            "match": {
-                                "full_name": {"query": query, "fuzziness": "auto"}
-                            }
-                        },
+                        "must": {"match": {"full_name": {"query": query, "fuzziness": "auto"}}},
                     }
                 },
             }
@@ -66,13 +58,9 @@ class PersonService(ServiceMixin):
         state_total: int = await self.get_total_count()
         params: str = f"{state_total}{page}{page_size}{query}"
         """ Пытаемся получить данные из кэша """
-        instance = await self._get_result_from_cache(
-            key=create_hash_key(index=self.index, params=params)
-        )
+        instance = await self._get_result_from_cache(key=create_hash_key(index=self.index, params=params))
         if not instance:
-            docs: Optional[dict] = await self.search_in_elastic(
-                body=body, _index="persons"
-            )
+            docs: Optional[dict] = await self.search_in_elastic(body=body, _index="persons")
             if not docs:
                 return None
             """ Получаем персон из ES """
@@ -92,9 +80,7 @@ class PersonService(ServiceMixin):
             """ Сохраняем персон в кеш """
             data = orjson.dumps([i.dict() for i in persons])
             new_param: str = f"{total}{page}{page_size}{query}"
-            await self._put_data_to_cache(
-                key=create_hash_key(index=self.index, params=new_param), instance=data
-            )
+            await self._put_data_to_cache(key=create_hash_key(index=self.index, params=new_param), instance=data)
             """ Сохраняем число персон в стейт """
             await self.set_total_count(value=total)
             return get_by_pagination(

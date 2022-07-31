@@ -4,13 +4,7 @@ import threading
 import time
 
 from alice.alice_request import AliceRequest
-from alice.alice_scenes import (
-    SCENES,
-    ErrorAnswerScene,
-    TimeoutAnswerScene,
-    WelcomeScene,
-    move_to_scene,
-)
+from alice.alice_scenes import SCENES, ErrorAnswerScene, TimeoutAnswerScene, WelcomeScene, move_to_scene
 from constants import STATE_REQUEST_KEY
 
 handler_response: dict = {}

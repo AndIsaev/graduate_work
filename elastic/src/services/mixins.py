@@ -1,4 +1,4 @@
-from typing import Optional, Union, Any
+from typing import Any, Optional, Union
 
 from core.config import CACHE_EXPIRE_IN_SECONDS
 from db.cache import AbstractCache
@@ -7,9 +7,7 @@ from elasticsearch import NotFoundError
 
 
 class ServiceMixin:
-    def __init__(
-        self, cache: AbstractCache, storage: AbstractStorage, index: str
-    ) -> None:
+    def __init__(self, cache: AbstractCache, storage: AbstractStorage, index: str) -> None:
         self.cache: AbstractCache = cache
         self.storage: AbstractStorage = storage
         self.index: str = index
@@ -21,9 +19,7 @@ class ServiceMixin:
     async def set_total_count(self, value: int):
         self.total_count = value
 
-    async def search_in_elastic(
-        self, body: dict, _source=None, sort=None, _index=None
-    ) -> Any:
+    async def search_in_elastic(self, body: dict, _source=None, sort=None, _index=None) -> Any:
         if not _index:
             _index = self.index
 
@@ -46,9 +42,7 @@ class ServiceMixin:
         instance = await self._get_result_from_cache(key=target_id)
         if not instance:
             """Если данных нет в кеше, то ищем его в Elasticsearch"""
-            instance = await self._get_data_from_elastic_by_id(
-                target_id=target_id, schema=schema
-            )
+            instance = await self._get_data_from_elastic_by_id(target_id=target_id, schema=schema)
             if not instance:
                 return None
             """ Сохраняем фильм в кеш """

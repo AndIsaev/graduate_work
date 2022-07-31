@@ -1,9 +1,7 @@
 from elasticsearch._async.helpers import async_bulk
 
 
-async def es_index_loader(
-    es_client, index: str, index_body: dict, row_data: list[dict]
-):
+async def es_index_loader(es_client, index: str, index_body: dict, row_data: list[dict]):
     # Создание индекса в Elastic
     await es_client.indices.create(index=index, body=index_body, ignore=400)
     # Заполнение данных для теста

@@ -4,9 +4,7 @@ from typing import Optional
 from pydantic import parse_obj_as
 
 
-def get_params_films_to_elastic(
-    page_size: int = 10, page: int = 1, genre: str = None, query: str = None
-) -> dict:
+def get_params_films_to_elastic(page_size: int = 10, page: int = 1, genre: str = None, query: str = None) -> dict:
     """
     :param page:
     :param page_size:

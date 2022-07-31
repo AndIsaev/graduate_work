@@ -51,9 +51,7 @@ async def test_search_person(person_index, make_get_request, redis_cache):
     page: int = response_body.get("page")
     page_size: int = response_body.get("page_size")
     total: int = response_body.get("total")
-    key: str = create_hash_key(
-        index=Settings.PERSON_INDEX, params=f"{total}{page}{page_size}{query}"
-    )
+    key: str = create_hash_key(index=Settings.PERSON_INDEX, params=f"{total}{page}{page_size}{query}")
     assert await redis_cache.get(key=key) is not None
     await redis_cache.flushall()
     assert await redis_cache.get(key=key) is None
@@ -67,9 +65,7 @@ async def test_person_films(movies_index, person_index, make_get_request, redis_
     response = await make_get_request(endpoint=f"person/{person_id}/films/")
     response_body = response.body
     response_films = response_body.get("films")
-    film_instances: list[dict] = [
-        obj for obj in film_work_data if obj.get("id") in test_person.get("film_ids")
-    ]
+    film_instances: list[dict] = [obj for obj in film_work_data if obj.get("id") in test_person.get("film_ids")]
     # Проверка результата Elastic
     assert response.status == HTTPStatus.OK
     assert FilmPaginationValidation(**response_body)
@@ -79,16 +75,12 @@ async def test_person_films(movies_index, person_index, make_get_request, redis_
             if film_instance.get("id") == response_film.get("uuid"):
                 assert film_instance.get("id") == response_film.get("uuid")
                 assert film_instance.get("title") == response_film.get("title")
-                assert film_instance.get("imdb_rating") == response_film.get(
-                    "imdb_rating"
-                )
+                assert film_instance.get("imdb_rating") == response_film.get("imdb_rating")
     # Проверка результата Redis
     page: int = response_body.get("page")
     page_size: int = response_body.get("page_size")
     total: int = response_body.get("total")
-    key: str = create_hash_key(
-        index="person_films", params=f"person_films{total}{page}{page_size}{person_id}"
-    )
+    key: str = create_hash_key(index="person_films", params=f"person_films{total}{page}{page_size}{person_id}")
     assert await redis_cache.get(key=key) is not None
     await redis_cache.flushall()
     assert await redis_cache.get(key=key) is None
