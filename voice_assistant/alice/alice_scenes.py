@@ -6,6 +6,7 @@ from typing import Optional
 
 from alice.utils import ENTITY_GENRE
 from api.fake_db import get_fake_film
+from api.models import BaseFilm
 from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
                        FILM_DESCRIPTION_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST, HELP_ANSWER_LIST,
                        REPEAT_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY, TIMEOUT_ANSWER_LIST,
@@ -153,25 +154,36 @@ class DirectorScene(AliceScene):
 class FilmDescriptionScene(AliceScene):
     def reply(self, request: Request) -> dict:
         logger.debug("Start FilmDescriptionScene.reply method")
-        film_name = ""
-        if request.intents.get("description_of_current_film"):
-            # get current film
-            film_name = get_fake_film()
-            logger.info(f"Current film is {film_name}")
-        elif description_of_named_film := request.intents.get("description_of_named_film"):
-            # get named film
-            film_name: str = description_of_named_film.get("slots").get("film").get("value")
-            logger.info(f"Named film is {film_name}")
+        film_name = self._get_film_name(request.intents)
         if not film_name:
             return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
         film_name = decapitalize(film_name)
         film = es_api.find_film_by_name(film_name=film_name)
-        logger.debug(f"films: {film}")
+        logger.debug(f"Films: {film}")
         if not film:
             error_answer = ErrorAnswerScene()
             return error_answer.reply(request)
         logger.debug(f"Description is {film}")
         genres = [genre.name for genre in film.genre if genre]
+        response = self._get_film_description_response(film, genres)
+        logger.debug(f"Response of FilmDescriptionScene: {response}")
+        return response
+
+    @staticmethod
+    def _get_film_name(film_intent: dict) -> str:
+        film_name = ""
+        if film_intent.get("description_of_current_film"):
+            # get current film
+            film_name = get_fake_film()
+            logger.info(f"Current film is {film_name}")
+        elif description_of_named_film := film_intent.get("description_of_named_film"):
+            # get named film
+            film_name: str = description_of_named_film.get("slots").get("film").get("value")
+            logger.info(f"Named film is {film_name}")
+        return film_name
+
+    def _get_film_description_response(self, film: BaseFilm, genres: Optional[list[str]]) -> dict:
+        """Get response depends on genres."""
         if genres:
             response = self._make_response(
                 random.choice(FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST).format(
@@ -189,7 +201,6 @@ class FilmDescriptionScene(AliceScene):
                     imdb_rating=film.imdb_rating,
                 )
             )
-        logger.debug(f"Response of FilmDescriptionScene: {response}")
         return response
 
 
