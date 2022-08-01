@@ -7,10 +7,22 @@ from typing import Optional
 from alice.utils import ENTITY_GENRE
 from api.fake_db import get_fake_film
 from api.models import BaseFilm
-from constants import (ACTOR_ANSWER_LIST, DIRECTOR_ANSWER_LIST, ERROR_ANSWER_LIST, EXIT_ANSWER_LIST,
-                       FILM_DESCRIPTION_ANSWER_LIST, FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST, HELP_ANSWER_LIST,
-                       REPEAT_ANSWER_LIST, SHORT_WELCOME_ANSWER_LIST, STATE_RESPONSE_KEY, TIMEOUT_ANSWER_LIST,
-                       TOP_FILMS_ANSWER_LIST, UNKNOWN_ANSWER_LIST, WELCOME_ANSWER_LIST)
+from constants import (
+    ACTOR_ANSWER_LIST,
+    DIRECTOR_ANSWER_LIST,
+    ERROR_ANSWER_LIST,
+    EXIT_ANSWER_LIST,
+    FILM_DESCRIPTION_ANSWER_LIST,
+    FILM_DESCRIPTION_WITH_GENRES_ANSWER_LIST,
+    HELP_ANSWER_LIST,
+    REPEAT_ANSWER_LIST,
+    SHORT_WELCOME_ANSWER_LIST,
+    STATE_RESPONSE_KEY,
+    TIMEOUT_ANSWER_LIST,
+    TOP_FILMS_ANSWER_LIST,
+    UNKNOWN_ANSWER_LIST,
+    WELCOME_ANSWER_LIST,
+)
 from loguru import logger
 from request import Request
 from scenes import Scene
@@ -112,11 +124,15 @@ class ActorScene(AliceScene):
         actors = es_api.find_film_actors(film_name=film_name)
         logger.info(f"Actors are {actors}")
         if not actors:
-            return self._make_response(f"К сожалению, не нашла актеров фильма: {film_name}")
+            return self._make_response(
+                f"К сожалению, не нашла актеров фильма: {film_name}"
+            )
         actor_names = get_person_names(actors)
         logger.info(f"Actor names are {actor_names}")
         response = self._make_response(
-            random.choice(ACTOR_ANSWER_LIST).format(film=film_name, actors=", ".join(actor_names))
+            random.choice(ACTOR_ANSWER_LIST).format(
+                film=film_name, actors=", ".join(actor_names)
+            )
         )
         logger.debug(f"Response of ActorScene: {response}")
         return response
@@ -132,7 +148,9 @@ class DirectorScene(AliceScene):
             logger.info(f"Current film is {film_name}")
         elif director_of_named_film := request.intents.get("director_of_named_film"):
             # get named film
-            film_name: str = director_of_named_film.get("slots").get("film").get("value")
+            film_name: str = (
+                director_of_named_film.get("slots").get("film").get("value")
+            )
             logger.info(f"Named film is {film_name}")
         if film_name:
             film_name = decapitalize(film_name)
@@ -141,11 +159,15 @@ class DirectorScene(AliceScene):
         directors = es_api.find_film_directors(film_name=film_name, limit=1)
         logger.info(f"Actors are {directors}")
         if not directors:
-            return self._make_response(f"К сожалению, не нашла режиссера фильма: {film_name}")
+            return self._make_response(
+                f"К сожалению, не нашла режиссера фильма: {film_name}"
+            )
         director_names = get_person_names(directors)
         logger.info(f"Director names are {director_names}")
         response = self._make_response(
-            random.choice(DIRECTOR_ANSWER_LIST).format(film=film_name, director=", ".join(director_names))
+            random.choice(DIRECTOR_ANSWER_LIST).format(
+                film=film_name, director=", ".join(director_names)
+            )
         )
         logger.debug(f"Response of DirectorScene: {response}")
         return response
@@ -178,11 +200,15 @@ class FilmDescriptionScene(AliceScene):
             logger.info(f"Current film is {film_name}")
         elif description_of_named_film := film_intent.get("description_of_named_film"):
             # get named film
-            film_name: str = description_of_named_film.get("slots").get("film").get("value")
+            film_name: str = (
+                description_of_named_film.get("slots").get("film").get("value")
+            )
             logger.info(f"Named film is {film_name}")
         return film_name
 
-    def _get_film_description_response(self, film: BaseFilm, genres: Optional[list[str]]) -> dict:
+    def _get_film_description_response(
+        self, film: BaseFilm, genres: Optional[list[str]]
+    ) -> dict:
         """Get response depends on genres."""
         if genres:
             response = self._make_response(
@@ -208,7 +234,10 @@ class TopFilmsScene(AliceScene):
     def reply(self, request: Request) -> dict:
         logger.debug("Start TopFilmsScene.reply method")
         genre_intent: Optional[str] = (
-            request.intents.get("top_films").get("slots", {}).get("genre", {}).get("value", {})
+            request.intents.get("top_films")
+            .get("slots", {})
+            .get("genre", {})
+            .get("value", {})
         )
         if genre_intent:
             genre_name = ENTITY_GENRE.get(genre_intent, None)
@@ -219,7 +248,9 @@ class TopFilmsScene(AliceScene):
             return self._make_response(random.choice(UNKNOWN_ANSWER_LIST))
         film_names = [_film.title for _film in films]
         logger.info(f"Top films are {films}")
-        response = self._make_response(random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_names)))
+        response = self._make_response(
+            random.choice(TOP_FILMS_ANSWER_LIST).format(films=", ".join(film_names))
+        )
         logger.debug(f"Response of TopFilmsScene: {response}")
         return response
 
@@ -242,11 +273,15 @@ def move_to_scene(request: Request) -> AliceScene:
         return ShortWelcomeScene()
     elif intents.get("help"):
         return HelpScene()
-    elif intents.get("description_of_current_film") or intents.get("description_of_named_film"):
+    elif intents.get("description_of_current_film") or intents.get(
+        "description_of_named_film"
+    ):
         return FilmDescriptionScene()
     elif intents.get("top_films"):
         return TopFilmsScene()
-    elif intents.get("director_of_current_film") or intents.get("director_of_named_film"):
+    elif intents.get("director_of_current_film") or intents.get(
+        "director_of_named_film"
+    ):
         return DirectorScene()
     elif intents.get("actor_of_named_film") or intents.get("actor_of_current_film"):
         return ActorScene()
