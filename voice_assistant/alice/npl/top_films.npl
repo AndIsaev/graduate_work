@@ -4,9 +4,9 @@ root:
     $Find $Film $PreGenre $Genre
     $Find $Top? $PreGenre $Genre
     $Find $Top $Film $PreGenre $Genre
-    $Find $Genre $Top $Film $PreGenre
+    $Find $Genre $Top $Film $PreGenre 
     $Find? [$Top $PreGenre $Genre]
-
+    
 filler:
     %lemma
     алиса
@@ -35,6 +35,7 @@ $Find:
     найди
     назови
     выдай
+    скажи
 
 $Top:
     %lemma

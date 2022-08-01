@@ -9,9 +9,10 @@ def get_search_es_connection():
     return SearchConnector(es_api_url)
 
 
-def decapitalize(text):
+def decapitalize(text: str):
+    """Upper first letter of text."""
     text = text.strip()
-    return text[:1].lower() + text[1:]
+    return text[:1].upper() + text[1:]
 
 
 def get_person_names(persons: list[Person]):
