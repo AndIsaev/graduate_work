@@ -1,0 +1,55 @@
+root:
+    $Find? $Top $Film
+    $Find [$Film $Top]
+    $Find $Film $PreGenre $Genre
+    $Find $Top? $PreGenre $Genre
+    $Find $Top $Film $PreGenre $Genre
+    $Find $Genre $Top $Film $PreGenre 
+    $Find? [$Top $PreGenre $Genre]
+    
+filler:
+    %lemma
+    алиса
+    пожалуйста
+
+slots:
+    genre:
+        type: Genres
+        source: $Genre
+
+$PreGenre:
+    %lemma
+    (из жанра|в жанре)?
+
+$Genre:
+    $Genres
+
+$Find:
+    %lemma
+    у какого фильма
+    какие ты знаешь
+    порекомендуй
+    посоветуй
+    подскажи
+    расскажи
+    найди
+    назови
+    выдай
+    скажи
+
+$Top:
+    %lemma
+    лучшие
+    рейтинг
+    топ
+    самый? высокий рейтинг
+    с самым? высоким рейтингом
+
+$Film:
+    %lemma
+    фильм
+    лента
+    кинолента
+    кино
+    картина
+    экранизация

@@ -1,0 +1,52 @@
+name: Voice assistent
+
+on:
+  push:
+    branches:
+        - 'develop'
+        - 'main'
+
+jobs:
+  tests:
+    # «Раннер» — создание изолированного окружения с последней версией Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+    # Запуск actions checkout — готового скрипта
+    # для клонирования репозитория
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      # Запуск actions setup-python — готового скрипта
+      # для развёртывания окружения Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r tools/requirements.ini
+        pip install -r admin/requirements.ini
+        pip install -r elastic/requirements.txt
+
+    - name: Test with flake8
+      run: |
+        flake8 .
+
+    - name: Test with mypy admin app
+      run: |
+        cd admin
+        mypy .
+        cd ..
+
+    - name: Test with mypy elastic app
+      run: |
+        cd elastic
+        mypy .
+        cd ..
+
+    - name: Test with mypy etl app
+      run: |
+        cd etl
+        mypy .
+        cd ..

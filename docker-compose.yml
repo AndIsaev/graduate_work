@@ -1,0 +1,114 @@
+
+services:
+  redis:
+    container_name: redis
+    image: docker.io/bitnami/redis:5.0.14
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    networks:
+      - test_network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: elasticsearch
+    env_file:
+      - ./.env
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - test_network
+    ports:
+      - "9200:9200"
+
+  fastapi:
+    container_name: fastapi
+    build:
+      context: ./elastic/src
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    networks:
+      - test_network
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - redis
+      - elasticsearch
+
+  postgres_db:
+    image: postgres:13.3-alpine
+    container_name: "postgres_db"
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    networks:
+      - test_network
+    volumes:
+      - postgres_data_admin:/var/lib/postgresql/data/
+
+  admin:
+    container_name: "admin"
+    build:
+      context: ./admin
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             python manage.py loaddata &&
+             gunicorn core.wsgi:application --bind 0.0.0.0:8080"
+    volumes:
+      - static:/code/static
+    env_file:
+      - ./.env
+
+    networks:
+      - test_network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_db
+
+  etl:
+    container_name: etl
+    build:
+      context: ./etl/
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    networks:
+      - test_network
+    ports:
+      - "8020:8020"
+    restart: always
+    depends_on:
+      - postgres_db
+      - elasticsearch
+
+  nginx:
+    container_name: "nginx"
+    image: nginx:1.23.0
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
+      - static:/usr/share/nginx/www/static
+    ports:
+      - "80:80"
+    networks:
+      - test_network
+    depends_on:
+      - admin
+      - fastapi
+
+volumes:
+  postgres_data_admin:
+  static:
+
+networks:
+  test_network:
